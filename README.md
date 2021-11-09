@@ -10,7 +10,7 @@ Adiyansa Prasetya Wicaksana | 13520044 | K01
 
 Nama | Link 
 --- | --- 
-Spedifikasi | TBA 
+Spedifikasi | https://docs.google.com/document/d/15iaOJ1DnSfNMVwf6HU0i5PdTpW8opQNcFwil6gcQzq4/edit#heading=h.h21gujddvsfc 
 Daftar Kelompok | https://docs.google.com/spreadsheets/d/10FTPI8DVEaKu22H90p2-twzi4ZX4vC1FAG4c4aJfvgw/edit#gid=0
 Form Asistensi | TBA
 Laporan Tubes | TBA
