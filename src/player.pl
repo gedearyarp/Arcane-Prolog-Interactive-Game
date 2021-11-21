@@ -1,4 +1,5 @@
 :- dynamic(player/10).
+:- dynamic(gold/1).
 
 % player(Job, Level, FarmLevel, FarmExp, FishingLevel, FishingExp, RanchLevel, RanchExp, Exp, BaseExp, Gold)
 % player(A,B,C,D,E,F,G,H,I,J,K)

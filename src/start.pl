@@ -1,4 +1,11 @@
 :- dynamic(startGame/1).
+:- include('player.pl').
+:- include('map.pl').
+:- include('quest.pl').
+:- include('fishing.pl').
+:- include('marketplace.pl').
+:- include('move.pl').
+
 
 startGame(false).
 
