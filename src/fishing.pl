@@ -105,13 +105,14 @@ fishRandomizer(Level, Fish) :-  random(1, 100, X),
                                 X =< 48    -> Fish = tuna;
                                 X =< 66    -> Fish = sardine;                
                                 X =< 81    -> Fish = eel;                
-                                X =< 93   -> Fish = salmon;
+                                X =< 93    -> Fish = salmon;
                                 X =< 100   -> Fish = shark)). 
 
 
 /* Fishing */
 fish :-                         levelFishing(Player, Level),                                               
                                 fishRandomizer(Level, Fish),
+                                
                                 (\+isFish(Fish) ->    
                                 write('You didn\'t get anything!'), nl,
                                 addFishingExp(Player, 3);
@@ -119,4 +120,4 @@ fish :-                         levelFishing(Player, Level),
                                 isFish(Fish) ->
                                 write('You got '), write(Fish), write('!'), nl,
                                 fishingExp(Fish, FishingExp),
-                                addFishingExp(Fish, FishingExp)). 
+                                addFishingExp(Player, FishingExp)). 
