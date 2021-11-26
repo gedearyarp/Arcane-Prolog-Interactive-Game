@@ -1,28 +1,18 @@
 :- dynamic(startGame/1).
 :- include('player.pl').
 :- include('map.pl').
-:- include('quest.pl').
+% :- include('quest.pl').
 :- include('fishing.pl').
 :- include('marketplace.pl').
 :- include('move.pl').
+:- include('help.pl').
 
 
 startGame(false).
 
 start :-
-    ['map.pl'],
-    ['player.pl'],
-    ['move.pl'],
-
     retract(startGame(false)), !,
     asserta(startGame(true)),
-
-    % write(' █████╗ ██████╗  ██████╗ █████╗ ███╗   ██╗███████╗'), nl,
-    % write('██╔══██╗██╔══██╗██╔════╝██╔══██╗████╗  ██║██╔════╝'), nl,
-    % write('███████║██████╔╝██║     ███████║██╔██╗ ██║█████╗  '), nl, 
-    % write('██╔══██║██╔══██╗██║     ██╔══██║██║╚██╗██║██╔══╝  '), nl,
-    % write('██║  ██║██║  ██║╚██████╗██║  ██║██║ ╚████║███████╗'), nl, 
-    % write('╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝'), nl.
 
     write(')>=>        >=> >=======> >=>           >=>        >===>      >=>       >=> >=======>'), nl,
     write('>=>        >=> >=>       >=>        >=>   >=>   >=>    >=>   >> >=>   >>=> >=>       '), nl,
