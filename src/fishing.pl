@@ -3,7 +3,6 @@
 :- dynamic(exp/2).
 
 /* To Do:
-    - validate player's location whether bisa fishing apa gak
     - fishing rod level effect on exp or drop rate
     - insert fish to player's inventory
     - connect perubahan player state di fishing to main  */
@@ -25,6 +24,13 @@ expFish(salmon, 18).
 expFish(sardine, 12).
 expFish(shark, 24).
 expFish(tuna, 10).
+
+
+/* TRIAL
+levelFishing(fay, 2).
+expFishing(fay, 480).
+speciality(fay, fishing).
+exp(fay, 1200). */
 
 
 /* Add Fishing Exp */
@@ -122,7 +128,10 @@ fishRandomizer(Level, Fish) :-
 
 
 /* Fishing */
-fish :-                         
+fish :-
+    mapObject(X, Y, 'P'),
+    aroundWater(X, Y),        
+    (canFish(true) ->
     levelFishing(Player, Level),                                               
     fishRandomizer(Level, Fish),
     
@@ -133,4 +142,6 @@ fish :-
     isFish(Fish) ->
     write('You got '), write(Fish), write('!'), nl,
     fishingExp(Fish, FishingExp),
-    addFishingExp(Player, FishingExp)). 
+    addFishingExp(Player, FishingExp));
+   
+    write('You can\'t go fishing there...')).              
