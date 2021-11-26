@@ -33,7 +33,7 @@ item(ranching, cow_meat).
 item(ranching, goat_meat).
 item(ranching, sheep_meat).
 item(ranching, egg).
-item(ranching, wol).
+item(ranching, wool).
 item(ranching, cow_milk).
 item(ranching, goat_milk).
 item(ranching, cow_leather).
@@ -81,9 +81,10 @@ priceItem(chicken_meat, 200).
 priceItem(cow_meat, 350)
 priceItem(goat_meat, 250).
 priceItem(sheep_meat, 300).
-priceItem(egg, 100).
-priceItem(wol, 100).
-priceItem(milk, 50).
+priceItem(egg, 50).
+priceItem(wool, 300).
+priceItem(cow_milk, 120).
+priceItem(goat_milk, 80).
 priceItem(cow_leather, 100).
 
 priceItem(carp, 100).
