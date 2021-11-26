@@ -34,13 +34,9 @@ item(ranching, goat_meat).
 item(ranching, sheep_meat).
 item(ranching, egg).
 item(ranching, wol).
-item(ranching, milk).
+item(ranching, cow_milk).
+item(ranching, goat_milk).
 item(ranching, cow_leather).
-
-/* FISHING BAIT */
-item(bait, basic_bait).
-item(bait, super_bait).
-item(bait, powerful_bait).
 
 /* FISHING ITEMS */
 item(fishing, carp).
@@ -89,10 +85,6 @@ priceItem(egg, 100).
 priceItem(wol, 100).
 priceItem(milk, 50).
 priceItem(cow_leather, 100).
-
-priceItem(basic_bait, 15).
-priceItem(super_bait, 20).
-priceItem(powerful_bait, 25).
 
 priceItem(carp, 100).
 priceItem(eel, 120).
