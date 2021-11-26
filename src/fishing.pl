@@ -1,9 +1,15 @@
 :- dynamic(expFishing/2).
 :- dynamic(levelFishing/2).
+:- dynamic(exp/2).
+
+/* To Do:
+    - validate player's location whether bisa fishing apa gak
+    - fishing rod level effect on exp or drop rate
+    - insert fish to player's inventory
+    - connect perubahan player state di fishing to main  */
 
 
 /* Fish List */
-
 isFish(carp).
 isFish(eel).
 isFish(salmon).
@@ -13,7 +19,6 @@ isFish(tuna).
 
 
 /* Fish Exp List */
-
 expFish(carp, 8). 
 expFish(eel, 15).
 expFish(salmon, 18).
@@ -23,7 +28,7 @@ expFish(tuna, 10).
 
 
 /* Add Fishing Exp */
-
+/* Fishing exp calculation */
 fishingExp(Fish, FishingExp) :-         
     (speciality(Player, fishing) ->
     expFish(Fish, ExpFish),
@@ -33,42 +38,46 @@ fishingExp(Fish, FishingExp) :-
     \+speciality(Player, fishing) ->
     expFish(Fish, ExpFish),
     FishingExp is ExpFish).
-
+/* Adding fishing exp to player state */
 addFishingExp(Player, FishingExp) :-    
     expFishing(Player, PrevExp),
+    exp(Player, PrevGeneralExp),
     levelFishing(Player, Level),
     retract(expFishing(Player, PrevExp)),
+    retract(exp(Player, PrevGeneralExp)),
     CurrentExp is PrevExp + FishingExp,
+    CurrentGeneralExp is PrevGeneralExp + FishingExp,
     write('You gained '), write(FishingExp), write(' fishing exp!'), nl,
 
     (Level < 2, CurrentExp >= 500 ->
     retract(levelFishing(Player, Level)),
     asserta(levelFishing(Player, 2)),
-    CurrentExp is CurrentExp - 500,
-    asserta(expFishing(Player, CurrentExp)),
+    FinalExp is CurrentExp - 500,
+    asserta(expFishing(Player, FinalExp)),
     write('Level up! Yey naik ke level 2'), nl;
 
     Level < 3, CurrentExp >= 1000 ->
     retract(levelFishing(Player, Level)),
     asserta(levelFishing(Player, 3)),
-    CurrentExp is CurrentExp - 1000,
-    asserta(expFishing(Player, CurrentExp)),
+    FinalExp is CurrentExp - 1000,
+    asserta(expFishing(Player, FinalExp)),
     write('Level up! Yey naik ke level 3'), nl;
 
     Level < 4, CurrentExp >= 2000 ->
     retract(levelFishing(Player, Level)),
     asserta(levelFishing(Player, 4)),
-    CurrentExp is CurrentExp - 2000,
-    asserta(expFishing(Player, CurrentExp)),
+    FinalExp is CurrentExp - 2000,
+    asserta(expFishing(Player, FinalExp)),
     write('Level up! Yey naik ke level 4'), nl;
 
     Level < 5, CurrentExp >= 5000 ->
     retract(levelFishing(Player, Level)),
     asserta(levelFishing(Player, 5)),
-    CurrentExp is CurrentExp - 5000,
-    asserta(expFishing(Player, CurrentExp)),
+    FinalExp is CurrentExp - 5000,
+    asserta(expFishing(Player, FinalExp)),
     write('Level up! Yey naik ke level 5,, wah keren bangeDDDzz level maksimum'), nl;
 
+    asserta(exp(Player, CurrentGeneralExp)),
     asserta(expFishing(Player, CurrentExp))).
 
 
