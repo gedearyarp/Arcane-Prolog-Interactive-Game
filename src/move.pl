@@ -1,3 +1,5 @@
+:- dynamic(canFish/1).
+
 hitEdge :- 
     write('You\'re in the edge of the map. We are sorry, but you can\'t move any further, try using \'map.\'').
 
@@ -20,6 +22,19 @@ encounterQuest(X, Y) :-
 encounterWater(X, Y) :-
     mapObject(X, Y, 'o'),
     write('You can\'t go into water'), nl.
+
+aroundWater(X, Y) :-
+    X1 is X + 1,
+    X2 is X - 1,
+    Y1 is Y + 1,
+    Y2 is Y - 1,
+    ((mapObject(X1, Y, 'o'); mapObject(X2, Y, 'o'); mapObject(X, Y1, 'o'); mapObject(X, Y2, 'o')) ->  
+    (\+canFish(_) -> asserta(canFish(true));
+    retract(canFish(_)), asserta(canFish(true)));
+    
+    (\+canFish(_) -> asserta(canFish(false));
+    retract(canFish(_)), asserta(canFish(false)))).
+
 
 % Move Up(w)
 % Ketemu Objektif
