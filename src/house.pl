@@ -1,10 +1,11 @@
 :- dynamic(diary/2).
 :- dynamic(day/1).
 
-day(1).
+% day(49).
+% startGame(true).
 
 house :-
-    % inHouse,
+    \+(day(50)),
     write('What do you want to do in this sweet, cozy home?'),nl,
     write('1. Sleep'),nl,
     write('2. Write Diary'),nl,
@@ -15,6 +16,15 @@ house :-
     X =:= 2 -> writeDiary;
     X =:= 3 -> readDiary;
     X =:= 4 -> exitHouse),nl,
+    !.
+
+house :-
+    day(50),
+    write('This might be your last day...'),nl,
+    write('You look up to the sky and see that you failed...'),nl,
+    write('After all, why are you here at the first place?'), nl,
+    write('You failed.'),nl,
+    retract(startGame(_)),
     !.
 
 sleep :-

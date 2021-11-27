@@ -2,8 +2,15 @@
 :- dynamic(fishQuest/1).
 :- dynamic(cropQuest/1).
 :- dynamic(dairyQuest/1).
+% :- dynamic(inQuest/1).
+:- dynamic(gold/1).
+:- dynamic(xp/1).
+:- dynamic(totalGold/1).
+inQuest(true).
+gold(500).
+xp(5).
+totalGold(200).
 
-% inQuest(true).
 
 
 % Crop, Fish, Dairy, Gold, Xp
@@ -28,17 +35,30 @@ initQuest :-
     write(Fish), write(' ekor ikan, dan '), write(Dairy), write(' buah dairy. Goodluck!'), nl,
     !.
 
+checkQuest :-
+    \+fishQuest(0),
+    \+cropQuest(0),
+    \+dairyQuest(0),
+    !.
 
 checkQuest :-
-    currentQuest(0,0,0,G,X),
+    fishQuest(0),
+    cropQuest(0),
+    dairyQuest(0),
+    currentQuest(G,X),
     gold(OldG),
+    totalGold(OldTGold),
     xp(OldX),
     NewG is G + OldG,
+    NewTGold is OldTGold + G,
     NewX is X + OldX,
     retract(gold(_)),
     asserta(gold(NewG)),
+    retract(totalGold(_)),
+    asserta(totalGold(NewTGold)),
     retract(xp(_)),
     asserta(xp(NewX)),
+    retract(currentQuest(_,_)),
     write('Selamat, anda telah menyelesaikan Quest!'), nl,
     write('Gold yang didapat: '), write(G), nl,
     write('Experience yang didapat: '), write(X),nl,
@@ -46,8 +66,8 @@ checkQuest :-
 
 
 quest :-
-    \+(inQuest(_)),
-    \+(currentQuest(_,_)),
+    \+inQuest(_),
+    \+currentQuest(_,_),
     write('Tidak ada quest yang sedang dijalankan.'),
     !.
 
@@ -73,6 +93,8 @@ decrementFish :-
 decrementFish :-
     fishQuest(Fish),
     X is Fish - 1,
+    (X >= 0 -> X is X;
+    X < 0 -> X is 0),
     retract(fishQuest(_)),
     asserta(fishQuest(X)),
     checkQuest,
@@ -85,6 +107,8 @@ decrementCrop :-
 decrementCrop :-
     cropQuest(Crop),
     X is Crop - 1,
+    (X >= 0 -> X is X;
+    X < 0 -> X is 0),
     retract(cropQuest(_)),
     asserta(cropQuest(X)),
     checkQuest,
