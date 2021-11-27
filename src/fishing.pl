@@ -41,6 +41,7 @@ addExpFishing(FishingExp) :-
     retract(exp(PrevGeneralExp)),
     CurrentExp is PrevExp + FishingExp,
     CurrentGeneralExp is PrevGeneralExp + FishingExp,
+    asserta(exp(CurrentGeneralExp)),    
     write('You gained '), write(FishingExp), write(' fishing exp!'), nl,
 
     (Level < 2, CurrentExp >= 500 ->
@@ -71,7 +72,6 @@ addExpFishing(FishingExp) :-
     asserta(fishingExp(FinalExp)),
     write('Level up! Yey naik ke level 5,, wah keren bangeDDDzz level maksimum'), nl;
 
-    asserta(exp(CurrentGeneralExp)),
     asserta(fishingExp(CurrentExp))).
 
 
