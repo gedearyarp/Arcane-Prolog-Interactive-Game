@@ -1,7 +1,8 @@
 :- dynamic(canFish/1).
+:- dynamic(canRanch/1).
 
 hitEdge :- 
-    write('You\'re in the edge of the map. We are sorry, but you can\'t move any further, try using \'map.\'').
+    write('You\'re in the edge of the map. We are sorry, but you can\'t move any further, try using \'map.\''), nl.
 
 encounterMarket(X, Y) :-
     mapObject(X, Y, 'M'),
@@ -34,6 +35,14 @@ aroundWater(X, Y) :-
     
     (\+canFish(_) -> asserta(canFish(false));
     retract(canFish(_)), asserta(canFish(false)))).
+
+inRanch(X, Y) :-
+    (mapObject(X, Y, 'R') ->
+    (\+canRanch(_) -> asserta(canRanch(true));
+    retract(canRanch(_)), asserta(canRanch(true)));    
+
+    (\+canRanch(_) -> asserta(canRanch(false));
+    retract(canRanch(_)), asserta(canRanch(false)))).
 
 
 % Move Up(w)
