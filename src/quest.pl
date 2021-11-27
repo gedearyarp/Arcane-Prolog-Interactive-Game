@@ -75,6 +75,7 @@ decrementFish :-
     X is Fish - 1,
     retract(fishQuest(_)),
     asserta(fishQuest(X)),
+    checkQuest,
     !.
 
 decrementCrop :-
@@ -86,6 +87,7 @@ decrementCrop :-
     X is Crop - 1,
     retract(cropQuest(_)),
     asserta(cropQuest(X)),
+    checkQuest,
     !.
 
 decrementDairy(N) :-
@@ -99,4 +101,5 @@ decrementDairy(N) :-
     Dairy >= N -> X is Dairy-N),
     retract(dairyQuest(_)),
     asserta(dairyQuest(X)),
+    checkQuest,
     !.
