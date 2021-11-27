@@ -3,23 +3,19 @@
 item(seed, corn_seed).
 item(seed, apple_seed).
 item(seed, watermelon_seed).
-item(seed, chili_seed).
-item(seed, onion_seed).
 item(seed, grape_seed).
-item(seed, tea_seed).
-item(seed, melon_seed).
-item(seed, carrot_seed).
+item(seed, tomato_seed).
+item(seed, potato_seed).
+item(seed, eggplant_seed).
 
-/* FARMING ITEMS /
+/* FARMING ITEMS */
 item(farming, corn).
 item(farming, apple).
 item(farming, watermelon).
-item(farming, chili).
-item(farming, onion).
 item(farming, grape).
-item(farming, tea).
-item(farming, melon).
-item(farming, carrot).
+item(farming, tomato).
+item(farming, potato).
+item(farming, eggplant).
 
 /* RANCHING FEEDS */
 item(feed, chicken_feed).
@@ -36,7 +32,6 @@ item(ranching, egg).
 item(ranching, wool).
 item(ranching, cow_milk).
 item(ranching, goat_milk).
-item(ranching, cow_leather).
 
 /* FISHING ITEMS */
 item(fishing, carp).
@@ -55,22 +50,18 @@ asserta(item(equipment, fishing_net, 1)).
 priceItem(corn_seed, 15).
 priceItem(apple_seed, 20).
 priceItem(watermelon_seed, 25).
-priceItem(chili_seed, 35).
-priceItem(onion_seed, 40).
 priceItem(grape_seed, 20).
-priceItem(tea_seed, 15).
-priceItem(melon_seed, 20).
-priceItem(carrot_seed, 10).
+priceItem(tomato_seed, 15).
+priceItem(potato_seed, 20).
+priceItem(eggplant_seed, 10).
 
 priceItem(corn, 75).
 priceItem(apple, 100).
 priceItem(watermelon, 125).
-priceItem(chili, 175).
-priceItem(onion, 200).
 priceItem(grape, 100).
-priceItem(tea, 75).
-priceItem(melon, 100).
-priceItem(carrot, 50).
+priceItem(tomato, 75).
+priceItem(potato, 100).
+priceItem(eggplant, 50).
 
 priceItem(chicken_feed, 40).
 priceItem(cow_feed, 75).
@@ -85,7 +76,6 @@ priceItem(egg, 50).
 priceItem(wool, 300).
 priceItem(cow_milk, 120).
 priceItem(goat_milk, 80).
-priceItem(cow_leather, 100).
 
 priceItem(carp, 100).
 priceItem(eel, 120).
