@@ -1,14 +1,16 @@
-:- dynamic(expRanching/2).
-:- dynamic(levelRanching/2).
 :- dynamic(fedAnimal/2).
-:- dynamic(exp/2).
+:- dynamic(collectAnimal/2).
+:- dynamic(cooldown/2).
+:- dynamic(inventory/2).
 
 /* To Do:
-    - validate player's location in ranch atau ga
     - cara buat access owned animal masih not fixed
     - insert ranch production to player's inventory
-    - state fedAnimal(Player, Animal) YANG DI ASSERTA harus di retract pas bobo biar feeding sekali sehari
-    - state cooldown(Animal, 0) reset balik ke max pas lagi bobo  */
+    - buying animal resulting in:
+        cooldown(Animal, Cooldown) --> do nothing if animal is owned; asserta cooldown ngikutin cooldownAnimal if not owned before
+        fedAnimal(Animal, Boolean) --> retract and asserta fedAnimal(Animal, true) if animal owned; asserta only if not owned before
+        collectAnimal(Animal, Boolean) --> do nothing if animal is owned; asserta collectAnimal(Animal, false) if not owned before
+    - pas bobo, kalo ada fedAnimal(Animal, true) --> retract, terus feedCooldown(Animal) */
 
 
 /* Animal List */
@@ -47,239 +49,191 @@ cooldownAnimal(5, goat, 1).
 
 
 /* Animal Production Exp List */
-expAnimalProduction(egg, 12).
-expAnimalProduction(wool, 30).
-expAnimalProduction(cow_milk, 25).
-expAnimalProduction(goat_milk, 20).
+expAnimalProduction(chicken, 12).
+expAnimalProduction(sheep, 30).
+expAnimalProduction(cow, 25).
+expAnimalProduction(goat, 20).
+
+
+/* TRIAL 
+inventory(chicken, 2).
+inventory(chicken_feed, 4).
+cooldown(chicken, 3).
+fedAnimal(chicken, false).
+collectAnimal(chicken, true). */
 
 
 /* Add Ranching Exp */
 /* Ranching exp calculation */
-ranchingExp(Animal, Count, RanchingExp) :-
-    (speciality(Player, ranching) ->
+expRanching(Animal, Count, RanchingExp) :-
+    (job('Rancher') ->
     expAnimalProduction(Animal, ExpAnimal),
-    TotalExpAnimal is ExpAnimal * Count
+    TotalExpAnimal is ExpAnimal * Count,
     ExpSpeciality is round(0.2 * TotalExpAnimal),
     RanchingExp is TotalExpAnimal + ExpSpeciality;
 
-    \+speciality(Player, ranching) ->
+    \+job('Rancher') ->
     expAnimalProduction(Animal, ExpAnimal),
     TotalExpAnimal is ExpAnimal * Count,
     RanchingExp is TotalExpAnimal).
 /* Adding ranching exp to player state */
-addRanchingExp(Player, RanchingExp) :-    
-    expRanching(Player, PrevExp),
-    exp(Player, PrevGeneralExp),
-    levelRanching(Player, Level),
-    retract(expRanching(Player, PrevExp)),
-    retract(exp(Player, PrevGeneralExp)),
+addExpRanching(RanchingExp) :-    
+    ranchingExp(PrevExp),
+    exp(PrevGeneralExp),
+    ranchingLevel(Level),
+    retract(ranchingExp(PrevExp)),
+    retract(exp(PrevGeneralExp)),
     CurrentExp is PrevExp + RanchingExp,
     CurrentGeneralExp is PrevGeneralExp + RanchingExp,
     write('You gained '), write(RanchingExp), write(' ranching exp!'), nl,
 
     (Level < 2, CurrentExp >= 500 ->
-    retract(levelRanching(Player, Level)),
-    asserta(levelRanching(Player, 2)),
+    retract(ranchingLevel(Level)),
+    asserta(ranchingLevel(2)),
     FinalExp is CurrentExp - 500,
-    asserta(expRanching(Player, FinalExp)),
+    asserta(ranchingExp(FinalExp)),
     write('Level up! Yey naik ke level 2'), nl;
 
     Level < 3, CurrentExp >= 1000 ->
-    retract(levelRanching(Player, Level)),
-    asserta(levelRanching(Player, 3)),
+    retract(ranchingLevel(Level)),
+    asserta(ranchingLevel(3)),
     FinalExp is CurrentExp - 1000,
-    asserta(expRanching(Player, FinalExp)),
+    asserta(ranchingExp(FinalExp)),
     write('Level up! Yey naik ke level 3'), nl;
 
     Level < 4, CurrentExp >= 2000 ->
-    retract(levelRanching(Player, Level)),
-    asserta(levelRanching(Player, 4)),
+    retract(ranchingLevel(Level)),
+    asserta(ranchingLevel(4)),
     FinalExp is CurrentExp - 2000,
-    asserta(expRanching(Player, FinalExp)),
+    asserta(ranchingExp(FinalExp)),
     write('Level up! Yey naik ke level 4'), nl;
 
     Level < 5, CurrentExp >= 5000 ->
-    retract(levelRanching(Player, Level)),
-    asserta(levelRanching(Player, 5)),
+    retract(ranchingLevel(Level)),
+    asserta(ranchingLevel(5)),
     FinalExp is CurrentExp - 5000,
-    asserta(expRanching(Player, FinalExp)),
+    asserta(ranchingExp(FinalExp)),
     write('Level up! Yey naik ke level 5,, wah keren bangeDDDzz level maksimum'), nl;
 
-    asserta(exp(Player, CurrentGeneralExp)),
-    asserta(expRanching(Player, CurrentExp))).
+    asserta(exp(CurrentGeneralExp)),
+    asserta(ranchingExp(CurrentExp))).
 
 
 /* Feeding */
 /* Reduction process */
 feedReduction(AnimalFeed, Count) :-
-    retract(inventory(Player, AnimalFeed, PrevQty)),    
+    retract(inventory(AnimalFeed, PrevQty)),    
     CurrentQty is PrevQty - Count,
-    asserta(inventory(Player, AnimalFeed, CurrentQty)).   
+    asserta(inventory(AnimalFeed, CurrentQty)).   
 feedCooldown(Animal) :-
     cooldown(Animal, PrevCooldown),
     retract(cooldown(Animal, PrevCooldown)),
     CurrentCooldown is PrevCooldown - 1,
-    asserta(cooldown(Animal, CurrentCooldown)).
-/* Feeding process */    
-feedChicken :-
-    (\+inventory(Player, chicken, _) ->
-    write('You don\'t have chicken! Go buy some in the marketplace!'), nl;
+
+    (CurrentCooldown =:= 0 ->
+    ranchingLevel(Level),
+    cooldownAnimal(Level, Animal, MaxCooldown),
+    asserta(cooldown(Animal, MaxCooldown)),
+    retract(collectAnimal(Animal, false)),
+    asserta(collectAnimal(Animal, true));  
+
+    asserta(cooldown(Animal, CurrentCooldown))).
+/* Feeding process */
+feed(Animal) :-
+    (\+inventory(Animal, _) ->
+    write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
-    inventory(Player, chicken, Count),
-    inventory(Player, chicken_feed, Qty),
+    inventory(Animal, Count),
+    (Animal = chicken -> AnimalFeed = chicken_feed;
+    Animal = cow -> AnimalFeed = cow_feed;
+    Animal = sheep -> AnimalFeed = sheep_feed;
+    Animal = goat -> AnimalFeed = goat_feed),
+    inventory(AnimalFeed, Qty),
     
-    (\+fedAnimal(Player, chicken) ->
+    (fedAnimal(Animal, false) ->
     (Qty < Count ->
-    write('You don\'t have enough chicken feed.'), nl;
+    write('You don\'t have enough '), write(Animal), write(' feed.'), nl;
 
-    feedReduction(chicken_feed, Count),
-    feedCooldown(chicken),
-    asserta(fedAnimal(Player, chicken)),
-    write('You finished feeding your chicken(s).'), nl);
+    feedReduction(AnimalFeed, Count),
+    retract(fedAnimal(Animal, false)),
+    asserta(fedAnimal(Animal, true)),
+    write('You finished feeding your '), write(Animal), write('(s).'), nl);
     
-    fedAnimal(Player, chicken) ->
-    write('You already fed your chicken(s)'), nl)).
-feedCow :-
-    (\+inventory(Player, cow, _) ->
-    write('You don\'t have cow! Go buy some in the marketplace!'), nl;
-    
-    inventory(Player, cow, Count),
-    inventory(Player, cow_feed, Qty),
-
-    (\+fedAnimal(Player, cow) ->   
-    (Qty < Count ->
-    write('You don\'t have enough cow feed.'), nl;
-
-    feedReduction(cow_feed, Count),
-    feedCooldown(cow),
-    asserta(fedAnimal(Player, cow)),
-    write('You finished feeding your cow(s).'), nl);
-    
-    fedAnimal(Player, cow) ->
-    write('You already fed your cow(s).'), nl)).
-feedSheep :-
-    (\+inventory(Player, sheep, _) ->
-    write('You don\'t have sheep! Go buy some in the marketplace!'), nl;
-    
-    inventory(Player, sheep, Count),
-    inventory(Player, sheep_feed, Qty),
-    
-    (\+fedAnimal(Player, sheep) ->     
-    (Qty < Count ->
-    write('You don\'t have enough sheep feed.'), nl;
-
-    feedReduction(sheep_feed, Count),
-    feedCooldown(sheep),
-    asserta(fedAnimal(Player, sheep)),    
-    write('You finished feeding your sheep(s).'), nl);
-    
-    fedAnimal(Player, sheep) ->
-    write('You already fed your cow(s).'), nl)).
-feedGoat :-
-    (\+inventory(Player, goat, _) ->
-    write('You don\'t have goat! Go buy some in the marketplace!'), nl;
-    
-    inventory(Player, goat, Count),
-    inventory(Player, goat_feed, Qty),
-    
-    (\+fedAnimal(Player, goat) ->     
-    (Qty < Count ->
-    write('You don\'t have enough goat feed.'), nl;
-
-    feedReduction(goat_feed, Count),
-    feedCooldown(goat),
-    asserta(fedAnimal(Player, goat)),      
-    write('You finished feeding your goat(s).'), nl);
-    
-    fedAnimal(Player, goat) ->
-    write('You already fed your goat(s).'), nl)).
+    fedAnimal(Animal, true) ->
+    write('You already fed your '), write(Animal), write('(s).'), nl)).    
 
 
 /* Collecting Animal Production */
-chicken :-
-    (\+inventory(Player, chicken, _) ->
-    write('You don\'t have chicken! Go buy some in the marketplace!'), nl;
+collect(Animal) :-
+    (\+inventory(Animal, _) ->
+    write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
-    inventory(Player, chicken, Count),
-    levelRanching(Player, Level),
-    cooldownAnimal(Level, chicken, MaxCooldown),
-    cooldown(chicken, CurrentCooldown),
+    inventory(Animal, Count),
+    ranchingLevel(Level),
     
-    (CurrentCooldown =:= MaxCooldown ->
-    write('You collected '), write(Count), write(' egg(s)!'), nl,
-    ranchingExp(chicken, Count, RanchingExp),
-    addRanchingExp(Player, RanchingExp);
+    (collectAnimal(Animal, true) ->
+    retract(collectAnimal(Animal, true)),
+    asserta(collectAnimal(Animal, false)),
+    write('You collected '), write(Count), 
+    (Animal = chicken -> write(' egg(s)!'), nl;
+    Animal = cow -> write(' bottle(s) of cow milk!'), nl;
+    Animal = sheep -> write(' wool(s)!'), nl;
+    Animal = goat -> write(' bottle(s) of goat milk!'), nl),
+
+    expRanching(Animal, Count, RanchingExp),
+    addExpRanching(RanchingExp);
     
-    write('There are no eggs yet...'), nl)).
-cow :-
-    (\+inventory(Player, cow, _) ->
-    write('You don\'t have cow! Go buy some in the marketplace!'), nl;
-    
-    inventory(Player, cow, Count),
-    levelRanching(Player, Level),
-    cooldownAnimal(Level, cow, MaxCooldown),
-    cooldown(cow, CurrentCooldown),
-    
-    (CurrentCooldown =:= MaxCooldown ->
-    write('You collected '), write(Count), write(' bottle(s) of cow milk!'), nl,
-    ranchingExp(cow, Count, RanchingExp),
-    addRanchingExp(Player, RanchingExp);
-    
-    write('There is no cow milk yet...'), nl)).
-sheep :-
-    (\+inventory(Player, sheep, _) ->
-    write('You don\'t have sheep! Go buy some in the marketplace!'), nl;
-    
-    inventory(Player, sheep, Count),
-    levelRanching(Player, Level),
-    cooldownAnimal(Level, sheep, MaxCooldown),
-    cooldown(sheep, CurrentCooldown),
-    
-    (CurrentCooldown =:= MaxCooldown ->
-    write('You collected '), write(Count), write(' wool(s)!'), nl,
-    ranchingExp(sheep, Count, RanchingExp),
-    addRanchingExp(Player, RanchingExp);
-    
-    write('Your sheep is still bald...'), nl)).
-goat :-
-    (\+inventory(Player, goat, _) ->
-    write('You don\'t have goat! Go buy some in the marketplace!'), nl;
-    
-    inventory(Player, goat, Count),
-    levelRanching(Player, Level),
-    cooldownAnimal(Level, goat, MaxCooldown),
-    cooldown(goat, CurrentCooldown),
-    
-    (CurrentCooldown =:= MaxCooldown ->
-    write('You got '), write(Count), write(' bottle(s) of goat milk!'), nl,
-    ranchingExp(goat, Count, RanchingExp),
-    addRanchingExp(Player, RanchingExp);
-    
-    write('There is no goat milk yet...'), nl)).
+    (Animal = chicken -> write('There are no eggs yet...'), nl;
+    Animal = cow -> write('There is no cow milk yet...'), nl;
+    Animal = sheep -> write('Your sheep is still bald...'), nl;
+    Animal = goat -> write('There is no goat milk yet...'), nl))).
 
 
 /* Ranching */
 ranch :-
-    write('Welcome to the ranch!'), 
+    mapObject(X, Y, 'P'),
+    inRanch(X, Y),
+    (canRanch(true) ->
+    write('Welcome to the Ranch!'), nl, 
     
-    (\+inventory(Player, chicken, _), \+inventory(Player, sheep, _), \+inventory(Player, cow, _), \+inventory(Player, goat, _) ->
+    (\+inventory(chicken, _), \+inventory(sheep, _), \+inventory(cow, _), \+inventory(goat, _) ->
     write('You have no animals. Go buy some in the marketplace!'), nl;
     
     write('You have:'), nl,
-    (inventory(Player, chicken, Count) ->
-    write(Count), write(' chicken'), nl;
-    write('')),
+    (inventory(chicken, Count) -> write(Count), write(' chicken'), nl; write('')),
+    (inventory(sheep, Count) -> write(Count), write(' sheep'), nl; write('')),
+    (inventory(cow, Count) -> write(Count), write(' cow'), nl; write('')),
+    (inventory(goat, Count) -> write(Count), write(' goat'), nl; write('')),  
+    write('What do you want to do?'), nl,
+    write('1. Feed animal'), nl,
+    write('2. Collect animal\'s production'), nl,
+    write('Enter command: '), read(Input), nl,
+    (Input =:= 1 ->
+    write('Which animal would you like to feed?'), nl,
+    write('1. Chicken'), nl,
+    write('2. Cow'), nl,
+    write('3. Sheep'), nl,
+    write('4. Goat'), nl,
+    write('Enter command: '), read(InputAnimal), nl,
+    (InputAnimal =:= 1 -> feed(chicken);
+    InputAnimal =:= 2 -> feed(cow);
+    InputAnimal =:= 3 -> feed(sheep);
+    InputAnimal =:= 4 -> feed(goat);
+    write('Wrong input! Please input the right command'), nl, ranch);
     
-    (inventory(Player, sheep, Count) ->
-    write(Count), write(' sheep'), nl;
-    write('')),
+    Input =:= 2 ->
+    write('Which animal\'s production would you like to collect?'), nl,
+    write('1. Chicken'), nl,
+    write('2. Cow'), nl,
+    write('3. Sheep'), nl,
+    write('4. Goat'), nl,
+    write('Enter command: '), read(InputAnimal), nl,
+    (InputAnimal =:= 1 -> collect(chicken);
+    InputAnimal =:= 2 -> collect(cow);
+    InputAnimal =:= 3 -> collect(sheep);
+    InputAnimal =:= 4 -> collect(goat);
+    write('Wrong input! Please input the right command'), nl, ranch);
+    
+    write('Wrong input! Please input the right command'), nl, ranch));
 
-    (inventory(Player, cow, Count) ->
-    write(Count), write(' cow'), nl;
-    write('')),
-
-    (inventory(Player, goat, Count) ->
-    write(Count), write(' goat'), nl;
-    write('')),
-      
-    write('What do you want to do?'), nl).
+    write('You\'re not in Ranch.'), nl).
