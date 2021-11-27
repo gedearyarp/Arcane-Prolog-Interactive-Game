@@ -4,7 +4,7 @@
 % :- include('quest.pl').
 :- include('fishing.pl').
 :- include('ranching.pl').
-:- include('farming.pl').
+% :- include('farming.pl').
 :- include('marketplace.pl').
 :- include('move.pl').
 :- include('help.pl').
@@ -43,7 +43,13 @@ start :-
     write(':::::: ##:::: ##: ##:::. ##:. ######:: ##:::: ##: ##::. ##: ########::::::'), nl,
     write('::::::..:::::..::..:::::..:::......:::..:::::..::..::::..::........:::::::'), nl,nl,
 
-    initPlayer.
+    initPlayer, 
+
+    repeat,
+    nl, write('> '),
+    read(X),
+    call(X),
+    fail.
 
 start :-
     write('The game has already started. Use \'help.\' to look at available commands!').

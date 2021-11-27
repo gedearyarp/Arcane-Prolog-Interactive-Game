@@ -65,7 +65,7 @@ w :-
     encounterHouse(X, Y1);
     encounterQuest(X, Y1)), !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X,Y1,'P')).
+    asserta(mapObject(X,Y1,'P')).
 
 % Move berhasil
 w :-
@@ -76,7 +76,7 @@ w :-
     mapSize(_, H),
     Y1 > 0, Y1 =< H, !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X,Y1,'P')),
+    asserta(mapObject(X,Y1,'P')),
     write('You moved up.').
 
 % Ketemu air
@@ -105,7 +105,7 @@ d :-
     encounterHouse(X1, Y);
     encounterQuest(X1, Y)), !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X1,Y,'P')).
+    asserta(mapObject(X1,Y,'P')).
 
 % Move berhasil
 d:- 
@@ -116,7 +116,7 @@ d:-
     mapSize(W, _),
     X1 > 0, X1 =< W, !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X1,Y,'P')),
+    asserta(mapObject(X1,Y,'P')),
     write('You moved right.').
 
 % Ketemu air
@@ -144,7 +144,7 @@ s :-
     encounterHouse(X, Y1);
     encounterQuest(X, Y1)), !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X,Y1,'P')).
+    asserta(mapObject(X,Y1,'P')).
 
 % Move berhasil
 s :- 
@@ -155,7 +155,7 @@ s :-
     mapSize(_, H),
     Y1 > 0, Y1 =< H, !,
     retract(mapObject(X, Y, 'P')), 
-    assertz(mapObject(X,Y1,'P')),
+    asserta(mapObject(X,Y1,'P')),
     write('You moved down.').
 
 % Ketemu air
@@ -183,7 +183,7 @@ a :-
     encounterHouse(X1, Y);
     encounterQuest(X1, Y)), !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X1,Y,'P')).
+    asserta(mapObject(X1,Y,'P')).
 
 % move berhasil
 a :- 
@@ -194,7 +194,7 @@ a :-
     mapSize(W, _),
     X1 > 0, X1 =< W, !,
     retract(mapObject(X, Y, 'P')),
-    assertz(mapObject(X1,Y,'P')),
+    asserta(mapObject(X1,Y,'P')),
     write('You moved left').
 
 
