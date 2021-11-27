@@ -1,13 +1,13 @@
 :- dynamic(fedAnimal/2).
 :- dynamic(collectAnimal/2).
-:- dynamic(cooldown/2).
+:- dynamic(cooldownCollect/2).
 :- dynamic(inventory/2).
 
 /* To Do:
     - cara buat access owned animal masih not fixed
     - insert ranch production to player's inventory
     - buying animal resulting in:
-        cooldown(Animal, Cooldown) --> do nothing if animal is owned; asserta cooldown ngikutin cooldownAnimal if not owned before
+        cooldownCollect(Animal, Cooldown) --> do nothing if animal is owned; asserta cooldownCollect ngikutin cooldownAnimal if not owned before
         fedAnimal(Animal, Boolean) --> retract and asserta fedAnimal(Animal, true) if animal owned; asserta only if not owned before
         collectAnimal(Animal, Boolean) --> do nothing if animal is owned; asserta collectAnimal(Animal, false) if not owned before
     - pas bobo, kalo ada fedAnimal(Animal, true) --> retract, terus feedCooldown(Animal) */
@@ -58,7 +58,7 @@ expAnimalProduction(goat, 20).
 /* TRIAL 
 inventory(chicken, 2).
 inventory(chicken_feed, 4).
-cooldown(chicken, 3).
+cooldownCollect(chicken, 3).
 fedAnimal(chicken, false).
 collectAnimal(chicken, true). */
 
@@ -126,18 +126,18 @@ feedReduction(AnimalFeed, Count) :-
     CurrentQty is PrevQty - Count,
     asserta(inventory(AnimalFeed, CurrentQty)).   
 feedCooldown(Animal) :-
-    cooldown(Animal, PrevCooldown),
-    retract(cooldown(Animal, PrevCooldown)),
+    cooldownCollect(Animal, PrevCooldown),
+    retract(cooldownCollect(Animal, PrevCooldown)),
     CurrentCooldown is PrevCooldown - 1,
 
     (CurrentCooldown =:= 0 ->
     ranchingLevel(Level),
     cooldownAnimal(Level, Animal, MaxCooldown),
-    asserta(cooldown(Animal, MaxCooldown)),
+    asserta(cooldownCollect(Animal, MaxCooldown)),
     retract(collectAnimal(Animal, false)),
     asserta(collectAnimal(Animal, true));  
 
-    asserta(cooldown(Animal, CurrentCooldown))).
+    asserta(cooldownCollect(Animal, CurrentCooldown))).
 /* Feeding process */
 feed(Animal) :-
     (\+inventory(Animal, _) ->
