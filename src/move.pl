@@ -1,5 +1,6 @@
 :- dynamic(canFish/1).
 :- dynamic(canRanch/1).
+:- dynamic(canDig/1).
 
 hitEdge :- 
     write('You\'re in the edge of the map. We are sorry, but you can\'t move any further, try using \'map.\''), nl.
@@ -43,6 +44,14 @@ inRanch(X, Y) :-
 
     (\+canRanch(_) -> asserta(canRanch(false));
     retract(canRanch(_)), asserta(canRanch(false)))).
+
+emptyTile(X, Y) :-
+    (\+mapObject(X, Y, 'R'), \+mapObject(X, Y, 'Q'), \+mapObject(X, Y, 'H'), \+mapObject(X, Y, 'M') ->
+    (\+canDig(_) -> asserta(canDig(true));
+    retract(canDig(_)), asserta(canDig(true)));    
+
+    (\+canDig(_) -> asserta(canDig(false));
+    retract(canDig(_)), asserta(canDig(false)))).    
 
 
 % Move Up(w)
