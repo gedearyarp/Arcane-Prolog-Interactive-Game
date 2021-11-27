@@ -43,9 +43,9 @@ item(fishing, shark).
 item(fishing, tuna).
 
 /* EQUIPMENTS */
-asserta(item(equipment, shovel, 1)).
-asserta(item(equipment, meat_knife, 1)).
-asserta(item(equipment, fishing_net, 1)).
+% asserta(item(equipment, shovel, 1)).
+% asserta(item(equipment, meat_knife, 1)).
+% asserta(item(equipment, fishing_net, 1)).
 
 /* PRICE ITEMS */
 priceItem(corn_seed, 15).
@@ -70,7 +70,7 @@ priceItem(goat_feed, 50).
 priceItem(sheep_feed, 60).
 
 priceItem(chicken_meat, 200).
-priceItem(cow_meat, 350)
+priceItem(cow_meat, 350).
 priceItem(goat_meat, 250).
 priceItem(sheep_meat, 300).
 priceItem(egg, 50).
@@ -112,7 +112,7 @@ itemName(goat_feed, 'Goat Food').
 itemName(sheep_feed, 'Sheep Food').
 
 itemName(chicken_meat, 'Chicken Meat').
-itemName(cow_meat, 'Cow Meat')
+itemName(cow_meat, 'Cow Meat').
 itemName(goat_meat, 'Goat Meat').
 itemName(sheep_meat, 'Sheep Meat').
 itemName(egg, 'Egg').

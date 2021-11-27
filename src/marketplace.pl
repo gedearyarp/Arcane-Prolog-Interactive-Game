@@ -1,3 +1,6 @@
+:- include('items.pl').
+:- dynamic(inMarket/1).
+inMarket(t).
 % TODO : Check if in market, Equipments level, Sync inventory
 
 % DEBUG CODE STARTS HERE
@@ -9,6 +12,7 @@
 % DEBUG CODE ENDS HERE
 
 market :-
+    inMarket(_),
     write('Mau jual apa beli BOS?'),nl,
     write('1. Beli'),nl,
     write('2. Jual'),nl,
@@ -19,6 +23,12 @@ market :-
     X =:= 3 -> upgradeEq),nl,
     !.
 
+market :-
+    \+inMarket(_),
+    write('Kamu tidak berada pada market.'),nl,
+    !.
+
+
 beli :-
     write('Mau beli apa?'),nl,
     write('1. Seed'),nl,
@@ -27,14 +37,30 @@ beli :-
     write('Masukkan pilihan: '), read(X),
     (X =:= 1 -> buySeed;
     X =:= 2 -> buyAnimal;
-    X =:= 3 -> buyAnimalFood),nl,
+    X =:= 3 -> buyAnimalFood),nl,,nl
     !.
 
-buySeed :-
+printMarket([]).
+printMarket([A|B]) :-
+    itemName(A, Nama),
+    priceItem(A, Harga),
+    write(Nama), write(' ('), write(Harga), write(' G)'), write(', Kode: '), write(A),nl,
+    printMarket(B).
 
-buyAnimal :-
+buySeed :-
+    write('Seed market. The finest there is.'), nl,
+    findall(Nama, item(seed, Nama), ListNama),
+    printMarket(ListNama).
+
+% buyAnimal :-
+%     write('Seed market. The finest there is.'), nl,
+%     findall(Nama, item(seed, Nama), ListNama),
+%     printMarket(ListNama).
 
 buyAnimalFood :-
+    write('Animal food market. Your cow will love it.'), nl,
+    findall(Nama, item(feed, Nama), ListNama),
+    printMarket(ListNama).
 
 % jual :-
 
@@ -60,130 +86,130 @@ buyAnimalFood :-
 %     !.
 
 % Kasus duit gacukup
-buy_carrot_seed :-
-    gold(G),
-    G < 50,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
+% buy_carrot_seed :-
+%     gold(G),
+%     G < 50,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
 
-% Kasus duit memenuhi
-buy_carrot_seed :-
-    gold(G),
-    G >= 50,
-    NewG is G - 50,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
+% % Kasus duit memenuhi
+% buy_carrot_seed :-
+%     gold(G),
+%     G >= 50,
+%     NewG is G - 50,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.
 
-% Kasus duit gacukup
-buy_corn_seed :-
-    gold(G),
-    G < 50,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
+% % Kasus duit gacukup
+% buy_corn_seed :-
+%     gold(G),
+%     G < 50,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
 
-% Kasus duit memenuhi
-buy_corn_seed :-
-    gold(G),
-    G >= 50,
-    NewG is G - 50,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
-
-
-% Kasus duit gacukup
-buy_tomato_seed :-
-    gold(G),
-    G < 50,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
-
-% Kasus duit memenuhi
-buy_tomato_seed :-
-    gold(G),
-    G >= 50,
-    NewG is G - 50,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
-
-% Kasus duit gacukup
-buy_potato_seed :-
-    gold(G),
-    G < 50,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
-
-% Kasus duit memenuhi
-buy_potato_seed :-
-    gold(G),
-    G >= 50,
-    NewG is G - 50,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
+% % Kasus duit memenuhi
+% buy_corn_seed :-
+%     gold(G),
+%     G >= 50,
+%     NewG is G - 50,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.
 
 
-% Kasus duit gacukup
-buy_chicken :-
-    gold(G),
-    G < 500,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
+% % Kasus duit gacukup
+% buy_tomato_seed :-
+%     gold(G),
+%     G < 50,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
 
-% Kasus duit memenuhi
-buy_chicken :-
-    gold(G),
-    G >= 500,
-    NewG is G - 500,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
+% % Kasus duit memenuhi
+% buy_tomato_seed :-
+%     gold(G),
+%     G >= 50,
+%     NewG is G - 50,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.
+
+% % Kasus duit gacukup
+% buy_potato_seed :-
+%     gold(G),
+%     G < 50,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
+
+% % Kasus duit memenuhi
+% buy_potato_seed :-
+%     gold(G),
+%     G >= 50,
+%     NewG is G - 50,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.
 
 
-% Kasus duit gacukup
-buy_sheep :-
-    gold(G),
-    G < 1000,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
+% % Kasus duit gacukup
+% buy_chicken :-
+%     gold(G),
+%     G < 500,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
 
-% Kasus duit memenuhi
-buy_sheep :-
-    gold(G),
-    G >= 1000,
-    NewG is G - 1000,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
+% % Kasus duit memenuhi
+% buy_chicken :-
+%     gold(G),
+%     G >= 500,
+%     NewG is G - 500,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.
 
-% Kasus duit gacukup
-buy_cow :-
-    gold(G),
-    G < 1500,nl,
-    write('Duit anda kurang pak. Sana kerja lagi!'),nl,
-    !.
 
-% Kasus duit memenuhi
-buy_cow :-
-    gold(G),
-    G >= 1500,
-    NewG is G - 1500,
-    retract(gold(G)),
-    asserta(gold(NewG)),nl,
-    write('Pembelian sukses. Yey jadi banyak barang!'),nl,
-    % Belom ada masukin ke inven
-    !.
+% % Kasus duit gacukup
+% buy_sheep :-
+%     gold(G),
+%     G < 1000,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
+
+% % Kasus duit memenuhi
+% buy_sheep :-
+%     gold(G),
+%     G >= 1000,
+%     NewG is G - 1000,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.
+
+% % Kasus duit gacukup
+% buy_cow :-
+%     gold(G),
+%     G < 1500,nl,
+%     write('Duit anda kurang pak. Sana kerja lagi!'),nl,
+%     !.
+
+% % Kasus duit memenuhi
+% buy_cow :-
+%     gold(G),
+%     G >= 1500,
+%     NewG is G - 1500,
+%     retract(gold(G)),
+%     asserta(gold(NewG)),nl,
+%     write('Pembelian sukses. Yey jadi banyak barang!'),nl,
+%     % Belom ada masukin ke inven
+%     !.

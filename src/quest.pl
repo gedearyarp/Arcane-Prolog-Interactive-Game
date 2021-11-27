@@ -3,13 +3,13 @@
 :- dynamic(cropQuest/1).
 :- dynamic(dairyQuest/1).
 % :- dynamic(inQuest/1).
-:- dynamic(gold/1).
-:- dynamic(xp/1).
-:- dynamic(totalGold/1).
-inQuest(true).
-gold(500).
-xp(5).
-totalGold(200).
+% :- dynamic(gold/1).
+% :- dynamic(xp/1).
+% :- dynamic(totalGold/1).
+% inQuest(true).
+% gold(500).
+% xp(5).
+% totalGold(200).
 
 
 
