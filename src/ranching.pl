@@ -1,7 +1,6 @@
 :- dynamic(fedAnimal/2).
 :- dynamic(collectAnimal/2).
 :- dynamic(cooldownCollect/2).
-:- dynamic(inventory/2).
 
 /* To Do:
     - cara buat access owned animal masih not fixed
@@ -85,6 +84,7 @@ addExpRanching(RanchingExp) :-
     retract(exp(PrevGeneralExp)),
     CurrentExp is PrevExp + RanchingExp,
     CurrentGeneralExp is PrevGeneralExp + RanchingExp,
+    asserta(exp(CurrentGeneralExp)),
     write('You gained '), write(RanchingExp), write(' ranching exp!'), nl,
 
     (Level < 2, CurrentExp >= 500 ->
@@ -115,7 +115,6 @@ addExpRanching(RanchingExp) :-
     asserta(ranchingExp(FinalExp)),
     write('Level up! Yey naik ke level 5,, wah keren bangeDDDzz level maksimum'), nl;
 
-    asserta(exp(CurrentGeneralExp)),
     asserta(ranchingExp(CurrentExp))).
 
 
