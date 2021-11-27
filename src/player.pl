@@ -5,8 +5,8 @@
 :- dynamic(farmExp/1).
 :- dynamic(fishingLevel/1).
 :- dynamic(fishingExp/1).
-:- dynamic(ranchLevel/1).
-:- dynamic(ranchExp/1).
+:- dynamic(ranchingLevel/1).
+:- dynamic(ranchingExp/1).
 :- dynamic(exp/1).
 :- dynamic(baseExp/1).
 :- dynamic(gold/1).
@@ -41,8 +41,8 @@ status :-       job(A),
                 farmExp(D),
                 fishingLevel(E), 
                 fishingExp(F),
-                ranchLevel(G),
-                ranchExp(H),    
+                ranchingLevel(G),
+                ranchingExp(H),    
                 exp(I),
                 baseExp(J), 
                 gold(K),
