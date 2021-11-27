@@ -210,7 +210,8 @@ harvest :-
     retract(harvestCrop(X, Y, Crop, true)),
     write('You harvested '), write(Crop), write('!'), nl,
     expFarming(Crop, FarmingExp),
-    addExpFarming(FarmingExp);
+    addExpFarming(FarmingExp),
+    decrementCrop;
 
     \+harvestCrop(X, Y, Crop, true) ->
     write('Nothing to harvest there.'), nl).

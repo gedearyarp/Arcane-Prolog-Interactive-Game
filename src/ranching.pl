@@ -180,7 +180,8 @@ collect(Animal) :-
     Animal = goat -> write(' bottle(s) of goat milk!'), nl),
 
     expRanching(Animal, Count, RanchingExp),
-    addExpRanching(RanchingExp);
+    addExpRanching(RanchingExp),
+    decrementDairy(Count);
     
     (Animal = chicken -> write('There are no eggs yet...'), nl;
     Animal = cow -> write('There is no cow milk yet...'), nl;
