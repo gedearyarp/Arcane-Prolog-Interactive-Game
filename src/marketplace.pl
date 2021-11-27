@@ -12,16 +12,33 @@ market :-
     write('Mau jual apa beli BOS?'),nl,
     write('1. Beli'),nl,
     write('2. Jual'),nl,
+    write('3. Upgrade Equipment'), nl,
     write('Masukkan pilihan: '),read(X),
     (X =:= 1 -> beli;
-    X =:= 2 -> jual),nl,
+    X =:= 2 -> jual;
+    X =:= 3 -> upgradeEq),nl,
     !.
 
 beli :-
     write('Mau beli apa?'),nl,
     write('1. Seed'),nl,
     write('2. Ranch animal'),nl,
-    write('3. Animal food')
+    write('3. Animal food'),nl,
+    write('Masukkan pilihan: '), read(X),
+    (X =:= 1 -> buySeed;
+    X =:= 2 -> buyAnimal;
+    X =:= 3 -> buyAnimalFood),nl,
+    !.
+
+buySeed :-
+
+buyAnimal :-
+
+buyAnimalFood :-
+
+% jual :-
+
+% upgradeEq :-
 
 % beli :-
 %     write('Mau beli apa niech?'),nl,
