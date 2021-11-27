@@ -1,11 +1,6 @@
-:- dynamic(expFishing/2).
-:- dynamic(levelFishing/2).
-:- dynamic(exp/2).
-
 /* To Do:
     - fishing rod level effect on exp or drop rate
-    - insert fish to player's inventory
-    - connect perubahan player state di fishing to main  */
+    - insert fish to player's inventory */
 
 
 /* Fish List */
@@ -26,65 +21,58 @@ expFish(shark, 24).
 expFish(tuna, 10).
 
 
-/* TRIAL
-levelFishing(fay, 2).
-expFishing(fay, 480).
-speciality(fay, fishing).
-exp(fay, 1200). */
-
-
 /* Add Fishing Exp */
 /* Fishing exp calculation */
-fishingExp(Fish, FishingExp) :-         
-    (speciality(Player, fishing) ->
+expFishing(Fish, FishingExp) :-         
+    (job('Fisherman') ->
     expFish(Fish, ExpFish),
     ExpSpeciality is round(0.2 * ExpFish),
     FishingExp is ExpFish + ExpSpeciality;
 
-    \+speciality(Player, fishing) ->
+    \+job('Fisherman') ->
     expFish(Fish, ExpFish),
     FishingExp is ExpFish).
 /* Adding fishing exp to player state */
-addFishingExp(Player, FishingExp) :-    
-    expFishing(Player, PrevExp),
-    exp(Player, PrevGeneralExp),
-    levelFishing(Player, Level),
-    retract(expFishing(Player, PrevExp)),
-    retract(exp(Player, PrevGeneralExp)),
+addExpFishing(FishingExp) :-    
+    fishingExp(PrevExp),
+    exp(PrevGeneralExp),
+    fishingLevel(Level),
+    retract(fishingExp(PrevExp)),
+    retract(exp(PrevGeneralExp)),
     CurrentExp is PrevExp + FishingExp,
     CurrentGeneralExp is PrevGeneralExp + FishingExp,
     write('You gained '), write(FishingExp), write(' fishing exp!'), nl,
 
     (Level < 2, CurrentExp >= 500 ->
-    retract(levelFishing(Player, Level)),
-    asserta(levelFishing(Player, 2)),
+    retract(fishingLevel(Level)),
+    asserta(fishingLevel(2)),
     FinalExp is CurrentExp - 500,
-    asserta(expFishing(Player, FinalExp)),
+    asserta(fishingExp(FinalExp)),
     write('Level up! Yey naik ke level 2'), nl;
 
     Level < 3, CurrentExp >= 1000 ->
-    retract(levelFishing(Player, Level)),
-    asserta(levelFishing(Player, 3)),
+    retract(fishingLevel(Level)),
+    asserta(fishingLevel(3)),
     FinalExp is CurrentExp - 1000,
-    asserta(expFishing(Player, FinalExp)),
+    asserta(fishingExp(FinalExp)),
     write('Level up! Yey naik ke level 3'), nl;
 
     Level < 4, CurrentExp >= 2000 ->
-    retract(levelFishing(Player, Level)),
-    asserta(levelFishing(Player, 4)),
+    retract(fishingLevel(Level)),
+    asserta(fishingLevel(4)),
     FinalExp is CurrentExp - 2000,
-    asserta(expFishing(Player, FinalExp)),
+    asserta(fishingExp(FinalExp)),
     write('Level up! Yey naik ke level 4'), nl;
 
     Level < 5, CurrentExp >= 5000 ->
-    retract(levelFishing(Player, Level)),
-    asserta(levelFishing(Player, 5)),
+    retract(fishingLevel(Level)),
+    asserta(fishingLevel(5)),
     FinalExp is CurrentExp - 5000,
-    asserta(expFishing(Player, FinalExp)),
+    asserta(fishingExp(FinalExp)),
     write('Level up! Yey naik ke level 5,, wah keren bangeDDDzz level maksimum'), nl;
 
-    asserta(exp(Player, CurrentGeneralExp)),
-    asserta(expFishing(Player, CurrentExp))).
+    asserta(exp(CurrentGeneralExp)),
+    asserta(fishingExp(CurrentExp))).
 
 
 /* Fish Randomizer */
@@ -132,16 +120,16 @@ fish :-
     mapObject(X, Y, 'P'),
     aroundWater(X, Y),        
     (canFish(true) ->
-    levelFishing(Player, Level),                                               
+    fishingLevel(Level),                                               
     fishRandomizer(Level, Fish),
     
     (\+isFish(Fish) ->    
     write('You didn\'t get anything!'), nl,
-    addFishingExp(Player, 3);
+    addExpFishing(3);
 
     isFish(Fish) ->
     write('You got '), write(Fish), write('!'), nl,
-    fishingExp(Fish, FishingExp),
-    addFishingExp(Player, FishingExp));
+    expFishing(Fish, FishingExp),
+    addExpFishing(FishingExp));
    
-    write('You can\'t go fishing there...')).              
+    write('You can\'t go fishing there...'), nl).              
