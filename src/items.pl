@@ -33,6 +33,7 @@ item(ranching, wool).
 item(ranching, cow_milk).
 item(ranching, goat_milk).
 
+
 /* FISHING ITEMS */
 item(fishing, carp).
 item(fishing, eel).
@@ -87,6 +88,55 @@ priceItem(tuna, 225).
 priceItem(shovel, 750).
 priceItem(meat_knife, 750).
 priceItem(fishing_net, 750).
+
+% Item Names
+itemName(corn_seed, 'Corn Seed').
+itemName(apple_seed, 'Apple Seed').
+itemName(watermelon_seed, 'Watermelon Seed').
+itemName(grape_seed, 'Grape Seed').
+itemName(tomato_seed, 'Tomato Seed').
+itemName(potato_seed, 'Potato Seed').
+itemName(eggplant_seed, 'Eggplant Seed').
+
+itemName(corn, 'Corn').
+itemName(apple, 'Apple').
+itemName(watermelon, 'Watermelon').
+itemName(grape, 'Grape').
+itemName(tomato, 'Tomato').
+itemName(potato, 'Potato').
+itemName(eggplant, 'Eggplant').
+
+itemName(chicken_feed, 'Chicken Food').
+itemName(cow_feed, 'Cow Food').
+itemName(goat_feed, 'Goat Food').
+itemName(sheep_feed, 'Sheep Food').
+
+itemName(chicken_meat, 'Chicken Meat').
+itemName(cow_meat, 'Cow Meat')
+itemName(goat_meat, 'Goat Meat').
+itemName(sheep_meat, 'Sheep Meat').
+itemName(egg, 'Egg').
+itemName(wool, 'Wool').
+itemName(cow_milk, 'Cow Milk').
+itemName(goat_milk, 'Goat Milk').
+
+itemName(carp, 'Carp').
+itemName(eel, 'Eel').
+itemName(salmon, 'Salmon').
+itemName(sardine, 'Sardine').
+itemName(shark, 'Shark').
+itemName(tuna, 'Tuna').
+
+itemName(shovel, 'Shovel').
+itemName(meat_knife, 'Meat Knife').
+itemName(fishing_net, 'Fishing Net').
+
+% Item Grades
+itemGrade(1, 'Normal').
+itemGrade(2, 'Improved').
+itemGrade(3, 'Antique').
+itemGrade(4, 'Epic').
+itemGrade(5, 'Exotic').
 
 /* LEVEL UP EQUIPMENTS */
 
