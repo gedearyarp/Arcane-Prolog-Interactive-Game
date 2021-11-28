@@ -51,9 +51,11 @@ start :-
     initPlayer, 
 
     repeat,
+    checkLevelUp,
     nl, write('> '),
     read(X),
-    (X == 'exit' -> !, write('Thank you for wasting such a precious time to play this game :)'), nl;
+    (checkEndGame, !;
+    X == 'exit' -> !, write('Thank you for wasting such a precious time to play this game :)'), nl;
     (catch(call(X), _, write('Wrong command, use \'help.\' to check all the valid command in ARCANE.')), fail)).
 
 start :-
