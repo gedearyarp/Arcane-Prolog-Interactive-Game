@@ -65,6 +65,8 @@ sleepInProgress :-
     CurrDay is X + 1,
     retract(day(X)),
     asserta(day(CurrDay)),
+    retract(energy(_)),
+    asserta(energy(100)),
     (CurrDay =:= 10 ->
     nl, write('Seems like there\'s someone new coming to our village...'), nl, write('Hmm... I wonder who is that person?'), nl,
     resetTile(13, 16),
