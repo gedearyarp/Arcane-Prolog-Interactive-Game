@@ -206,6 +206,7 @@ collect(Animal) :-
     Animal = sheep -> write(' wool(s)!'), nl, addItem(wool, Count);
     Animal = goat -> write(' bottle(s) of goat milk!'), nl, addItem(goat_milk, Count)),
 
+    reduceEnergy(3),
     expRanching(Animal, Count, RanchingExp),
     addExpRanching(RanchingExp),
     decrementDairy(Count);
@@ -231,6 +232,10 @@ slaughter(Animal) :-
     (\+member(Animal, Inventory) ->
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
+    energy(Energy),
+    (Energy < 20 ->
+    write('You\'re way too tired.'), nl;
+
     throwItem(Animal),
     resetAnimalState(Animal),
     write('You got '), 
@@ -239,8 +244,9 @@ slaughter(Animal) :-
     Animal = sheep -> write('sheep meat!'), nl, addItem(sheep_meat);
     Animal = goat -> write('goat meat!'), nl, addItem(goat_meat)),
 
+    reduceEnergy(5),
     expRanching(Animal, 1, RanchingExp),
-    addExpRanching(RanchingExp)).
+    addExpRanching(RanchingExp))).
 
 
 /* Ranching */
@@ -248,7 +254,7 @@ ranch :-
     mapObject(X, Y, 'P'),
     inRanch(X, Y),
     (canRanch(true) ->
-    write('Welcome to the Ranch!'), nl, 
+    write('Welcome to the Ranch!'), nl,
     currInventory(Inventory),
     cntCategoryInventory(animal, Inventory, AnimalQty),
     (AnimalQty == 0 ->

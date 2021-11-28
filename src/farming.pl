@@ -117,7 +117,11 @@ plantSeed(Seed) :-
     (\+member(Seed, Inventory) ->
     write('You don\'t have that seed!'), nl;
     
-    member(Seed, Inventory) ->
+    energy(Energy),
+    (Energy < 10 ->
+    write('You\'re way too tired.'), nl;
+
+    reduceEnergy(3),
     % Inventory Control
     throwItem(Seed),
     % Map Control
@@ -133,7 +137,7 @@ plantSeed(Seed) :-
     % Tile Control
     retract(canPlant(X, Y, true)),
     asserta(canPlant(X, Y, false)),
-    write('You planted '), write(Crop), write(' seed.'), nl).
+    write('You planted '), write(Crop), write(' seed.'), nl)).
 
 
 /* Reduction Process */
@@ -177,13 +181,18 @@ updateFarm :-
 dig :-
     mapObject(X, Y, 'P'),
     emptyTile(X, Y),
+    energy(Energy),
 
     (canDig(true) ->
+    (Energy < 10 ->
+    write('You\'re way too tired.'), nl;
+    
     resetTile(X, Y),
     (\+mapObject(X, Y, '=') -> assertz(mapObject(X, Y, '=')); write('')),  % Tile hasn't been dug before
     (\+canPlant(X, Y, _) -> asserta(canPlant(X, Y, true));
-    retract(canPlant(X, Y, _)), asserta(canPlant(X, Y, true))),    
-    write('You digged the tile.'), nl;
+    retract(canPlant(X, Y, _)), asserta(canPlant(X, Y, true))),
+    reduceEnergy(2),
+    write('You digged the tile.'), nl);
     
     (\+canPlant(X, Y, _) -> asserta(canPlant(X, Y, false));
     retract(canPlant(X, Y, _)), asserta(canPlant(X, Y, false))),    
@@ -229,6 +238,7 @@ harvest :-
     addItem(Crop),
     expFarming(Crop, FarmingExp),
     addExpFarming(FarmingExp),
+    reduceEnergy(2),
     decrementCrop;
 
     \+harvestCrop(X, Y, Crop, true) ->

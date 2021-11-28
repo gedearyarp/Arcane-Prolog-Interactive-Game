@@ -120,6 +120,11 @@ fish :-
     mapObject(X, Y, 'P'),
     aroundWater(X, Y),        
     (canFish(true) ->
+    energy(Energy),
+    (Energy < 20 ->
+    write('You\'re way too tired.'), nl;
+    
+    reduceEnergy(3),
     fishingLevel(Level),                                               
     fishRandomizer(Level, Fish),
     
@@ -132,6 +137,6 @@ fish :-
     addItem(Fish),
     expFishing(Fish, FishingExp),
     addExpFishing(FishingExp),
-    decrementFish);
+    decrementFish));
    
     write('You can\'t go fishing there...'), nl).              
