@@ -193,7 +193,6 @@ collect(Animal) :-
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
     cntItemInventory(Animal, Inventory, Count),
-    ranchingLevel(Level),
     
     (collectAnimal(Animal, true) ->
     retract(collectAnimal(Animal, true)),
@@ -229,11 +228,11 @@ slaughter(Animal) :-
     
     throwItem(Animal),
     resetAnimalState(Animal),
-    write('You got '), write(Count), 
-    (Animal = chicken -> write(' chicken meat!'), nl, addItem(chicken_meat);
-    Animal = cow -> write(' cow meat!'), nl, addItem(cow_meat);
-    Animal = sheep -> write(' sheep meat!'), nl, addItem(sheep_meat);
-    Animal = goat -> write(' goat meat!'), nl, addItem(goat_meat)),
+    write('You got '), 
+    (Animal = chicken -> write('chicken meat!'), nl, addItem(chicken_meat);
+    Animal = cow -> write('cow meat!'), nl, addItem(cow_meat);
+    Animal = sheep -> write('sheep meat!'), nl, addItem(sheep_meat);
+    Animal = goat -> write('goat meat!'), nl, addItem(goat_meat)),
 
     expRanching(Animal, 1, RanchingExp),
     addExpRanching(RanchingExp)).
