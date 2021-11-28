@@ -63,6 +63,7 @@ sleepInProgress :-
     nl, write('That odd person is leaving today. Will he come back again?'), nl,
     retract(mapObject(13, 16, 'A')),
     retract(alchemist(true))),
+    updateRanch,
     house.
 
 writeDiary :-

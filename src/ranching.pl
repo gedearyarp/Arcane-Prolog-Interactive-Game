@@ -146,6 +146,29 @@ feed(Animal) :-
     write('You already fed your '), write(Animal), write('(s).'), nl)).    
 
 
+/* Ranching Process while Sleeping */
+updateRanch :-
+    ((\+member(chicken, Inventory) -> write('');
+    feedCooldown(chicken),
+    (\+fedAnimal(chicken, _) -> asserta(fedAnimal(chicken, false));
+    retract(fedAnimal(chicken, _)), asserta(fedAnimal(chicken, false)))),
+
+    (\+member(sheep, Inventory) -> write('');
+    feedCooldown(sheep),
+    (\+fedAnimal(sheep, _) -> asserta(fedAnimal(sheep, false));
+    retract(fedAnimal(sheep, _)), asserta(fedAnimal(sheep, false)))),
+
+    (\+member(cow, Inventory) -> write('');
+    feedCooldown(cow),
+    (\+fedAnimal(cow, _) -> asserta(fedAnimal(cow, false));
+    retract(fedAnimal(cow, _)), asserta(fedAnimal(cow, false)))),
+
+    (\+member(goat, Inventory) -> write('');
+    feedCooldown(goat),
+    (\+fedAnimal(goat, _) -> asserta(fedAnimal(goat, false));
+    retract(fedAnimal(goat, _)), asserta(fedAnimal(goat, false))))).
+
+
 /* Collecting Animal Production */
 collect(Animal) :-
     (\+member(Animal, Inventory) ->
