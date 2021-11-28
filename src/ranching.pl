@@ -6,8 +6,7 @@
     - buying animal resulting in:
         cooldownCollect(Animal, Cooldown) --> do nothing if animal is owned; asserta cooldownCollect ngikutin cooldownAnimal if not owned before
         fedAnimal(Animal, Boolean) --> retract and asserta fedAnimal(Animal, true) if animal owned; asserta only if not owned before
-        collectAnimal(Animal, Boolean) --> do nothing if animal is owned; asserta collectAnimal(Animal, false) if not owned before
-    - pas bobo, kalo ada fedAnimal(Animal, true) --> retract, terus feedCooldown(Animal) */
+        collectAnimal(Animal, Boolean) --> do nothing if animal is owned; asserta collectAnimal(Animal, false) if not owned before */
 
 
 /* Animal List */
@@ -55,16 +54,21 @@ expAnimalProduction(goat, 20).
 /* Add Ranching Exp */
 /* Ranching exp calculation */
 expRanching(Animal, Count, RanchingExp) :-
-    (job('Rancher') ->
     expAnimalProduction(Animal, ExpAnimal),
+    equipment(knife, LevelEquipment),
+    (LevelEquipment =:= 1 -> ExpRate is 0;
+    LevelEquipment =:= 2 -> ExpRate is 0.3;
+    LevelEquipment =:= 3 -> ExpRate is 0.75),
+    ExpEquipment is round(ExpRate * ExpAnimal * Count),
+
+    (job('Rancher') ->
     TotalExpAnimal is ExpAnimal * Count,
     ExpSpeciality is round(0.2 * TotalExpAnimal),
-    RanchingExp is TotalExpAnimal + ExpSpeciality;
+    RanchingExp is TotalExpAnimal + ExpSpeciality + ExpEquipment;
 
     \+job('Rancher') ->
-    expAnimalProduction(Animal, ExpAnimal),
     TotalExpAnimal is ExpAnimal * Count,
-    RanchingExp is TotalExpAnimal).
+    RanchingExp is TotalExpAnimal + ExpEquipment).
 /* Adding ranching exp to player state */
 addExpRanching(RanchingExp) :-    
     ranchingExp(PrevExp),
@@ -196,6 +200,31 @@ collect(Animal) :-
     Animal = goat -> write('There is no goat milk yet...'), nl))).
 
 
+/* Slaughter Animal */
+resetAnimalState(Animal) :-
+    (member(Animal, Inventory) ->
+    write('');
+    
+    \+member(Animal, Inventory) ->
+    (\+fedAnimal(Animal, _) -> write(''); retract(fedAnimal(Animal, _))),
+    (\+collectAnimal(Animal, _) -> write(''); retract(collectAnimal(Animal, _))),
+    (\+cooldownCollect(Animal, _) -> write(''); retract(cooldownCollect(Animal, _)))).
+slaughter(Animal) :-
+    (\+member(Animal, Inventory) ->
+    write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
+    
+    throwItem(Animal),
+    resetAnimalState(Animal),
+    write('You got '), write(Count), 
+    (Animal = chicken -> write(' chicken meat!'), nl, addItem(chicken_meat);
+    Animal = cow -> write(' cow meat!'), nl, addItem(cow_meat);
+    Animal = sheep -> write(' sheep meat!'), nl, addItem(sheep_meat);
+    Animal = goat -> write(' goat meat!'), nl, addItem(goat_meat)),
+
+    expRanching(Animal, 1, RanchingExp),
+    addExpRanching(RanchingExp)).
+
+
 /* Ranching */
 ranch :-
     mapObject(X, Y, 'P'),
@@ -251,10 +280,10 @@ ranch :-
     write('3. Sheep'), nl,
     write('4. Goat'), nl,
     write('Enter command: '), read(InputAnimal), nl,
-    (InputAnimal =:= 1 -> throwItem(chicken), addItem(chicken_meat), write('You get chicken meat!'), nl;
-    InputAnimal =:= 2 -> throwItem(cow), addItem(cow_meat), write('You get cow meat!'), nl;
-    InputAnimal =:= 3 -> throwItem(sheep), addItem(sheep_meat), write('You get sheep meat!'), nl;
-    InputAnimal =:= 4 -> throwItem(goat), addItem(goat_meat), write('You get goat meat!'), nl;
+    (InputAnimal =:= 1 -> slaughter(chicken);
+    InputAnimal =:= 2 -> slaughter(cow);
+    InputAnimal =:= 3 -> slaughter(sheep);
+    InputAnimal =:= 4 -> slaughter(goat);
     write('Wrong input! Please input the right command'), nl);  
 
     Input =:= 4 ->
