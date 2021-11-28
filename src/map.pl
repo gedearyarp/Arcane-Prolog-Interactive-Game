@@ -1,4 +1,5 @@
 :- dynamic(mapObject/3).
+:- dynamic(alchemist/1).
 
 mapObject(7, 3, 'Q').
 mapObject(10, 5, 'R').
@@ -20,7 +21,15 @@ mapObject(10, 12, 'M').
 
 mapSize(14, 17).
 
-map :- startGame(true), !, drawMap.
+map :- startGame(true), !,
+        write('P --> Player         '), write('H --> House'), nl,
+        write('M --> MarketPlace    '), write('R --> Ranch'), nl,
+        write('Q --> Quest          '), write('o --> Water'), nl,
+        write('= --> Plowed Tile    '), 
+        (alchemist(_) -> write('A --> Alchemist'), nl, drawMap;
+        true(_), nl, drawMap).
+
+map :- write('Game has not been started.'), nl.
 
 % DRAW BORDERS
 % Right
