@@ -57,7 +57,7 @@ cooldownCrop(eggplant, 2).
 expFarming(Crop, FarmingExp) :-
     expCrop(Crop, ExpCrop),
     equipment(shovel, LevelEquipment),
-    (LevelEquipment =:= 1 -> ExpRate is 0;
+    (LevelEquipment =:= 1 -> ExpRate is 0.1;
     LevelEquipment =:= 2 -> ExpRate is 0.3;
     LevelEquipment =:= 3 -> ExpRate is 0.75),
     ExpEquipment is round(ExpRate * ExpCrop),

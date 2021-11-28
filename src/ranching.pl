@@ -71,7 +71,7 @@ initAnimal(Animal) :-
 expRanching(Animal, Count, RanchingExp) :-
     expAnimalProduction(Animal, ExpAnimal),
     equipment(knife, LevelEquipment),
-    (LevelEquipment =:= 1 -> ExpRate is 0;
+    (LevelEquipment =:= 1 -> ExpRate is 0.1;
     LevelEquipment =:= 2 -> ExpRate is 0.3;
     LevelEquipment =:= 3 -> ExpRate is 0.75),
     ExpEquipment is round(ExpRate * ExpAnimal * Count),
