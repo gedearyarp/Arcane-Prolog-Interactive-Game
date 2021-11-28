@@ -37,7 +37,7 @@ encounterWater(X, Y) :-
 
 encounterAlchemist(X, Y) :-
     mapObject(X, Y, 'A'),
-    alchemist, nl.
+    enterAlchemist(X, Y), alchemist, nl.
 
 enterAlchemist(X, Y) :-
     (mapObject(X, Y, 'A') ->

@@ -14,4 +14,5 @@ help :-
         write('% 11. dig    : membuat tiles yang siap ditanam                                  %'), nl,
         write('% 12. plant  : menanam tumbuhan (harus dilakukan di \'=\')                        %'), nl,
         write('% 13. harvest: memanen tumbuhan (harus dilakukan di tumbuhan)                   %'), nl,
+        write('% 14. exit   : keluar dari permainan (tidak menyimpan state dari game)          %'), nl,
         write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.

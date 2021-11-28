@@ -1,23 +1,23 @@
 :- dynamic(currentSeason/1).
 
-currentSeason(autumn).
+currentSeason(spring).
 
-season(autumn, 1, 12).
-season(spring, 13, 26).
+season(spring, 1, 12).
+season(summer, 13, 26).
 season(fall, 27, 38).
 season(winter, 39, 50).
-seasonName(autumn, 'Autumn').
 seasonName(spring, 'Spring').
+seasonName(summer, 'Summer').
 seasonName(fall, 'Fall').
 seasonName(winter, 'winter').
-itemSeason(autumn, corn_seed).
-itemSeason(autumn, apple_seed).
-itemSeason(autumn, watermelon_seed).
-itemSeason(autumn, grape_seed).
+itemSeason(spring, corn_seed).
+itemSeason(spring, apple_seed).
 itemSeason(spring, watermelon_seed).
 itemSeason(spring, grape_seed).
-itemSeason(spring, tomato_seed).
-itemSeason(spring, potato_seed).
+itemSeason(summer, watermelon_seed).
+itemSeason(summer, grape_seed).
+itemSeason(summer, tomato_seed).
+itemSeason(summer, potato_seed).
 itemSeason(fall, corn_seed).
 itemSeason(fall, grape_seed).
 itemSeason(fall, tomato_seed).
@@ -29,16 +29,16 @@ itemSeason(winter, grape_seed).
 
 checkSeason :-
     day(CurrDay),
-    (CurrDay =:= 13 -> changeSeason(spring);
+    (CurrDay =:= 13 -> changeSeason(summer);
     CurrDay =:= 27 -> changeSeason(fall);
     CurrDay =:= 39 -> changeSeason(winter);
     true(_)),
     !.
 
-changeSeason(spring) :-
+changeSeason(summer) :-
     write('Matahari menyinari. Sekarang sedang musim panas! Cek market untuk melihat seeds terbaru.'), nl,
     retract(currentSeason(_)),
-    asserta(currentSeason(spring)),
+    asserta(currentSeason(summer)),
     !.
 
 changeSeason(fall) :-

@@ -26,6 +26,9 @@
 % exp(1).
 % baseExp(1). 
 % gold(1).
+% totalGold(1).
+% day(1).
+% energy(1).
 
 initPlayer :-   write('In order to play, please choose your role in this world(1-3).'), nl,
                 write('1. Fisherman'), nl,
