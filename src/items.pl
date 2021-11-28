@@ -47,6 +47,13 @@ item(fishing, sardine).
 item(fishing, shark).
 item(fishing, tuna).
 
+/* POTION ITEMS */
+item(potion, potion_fishing_level).
+item(potion, potion_ranching_level).
+item(potion, potion_farming_level).
+item(potion, potion_player_level).
+item(potion, potion_super_level).
+
 /* EQUIPMENTS */
 % asserta(item(equipment, shovel, 1)).
 % asserta(item(equipment, meat_knife, 1)).
@@ -99,6 +106,12 @@ priceItem(shovel, 750).
 priceItem(meat_knife, 750).
 priceItem(fishing_net, 750).
 
+priceItem(potion_fishing_level, 3000).
+priceItem(potion_ranching_level, 3000).
+priceItem(potion_farming_level, 3000).
+priceItem(potion_player_level, 4000).
+priceItem(potion_super_level, 5000).
+
 % Item Names
 itemName(corn_seed, 'Corn Seed').
 itemName(apple_seed, 'Apple Seed').
@@ -121,6 +134,11 @@ itemName(cow_feed, 'Cow Food').
 itemName(goat_feed, 'Goat Food').
 itemName(sheep_feed, 'Sheep Food').
 
+itemName(chicken, 'Chicken').
+itemName(cow, 'Cow').
+itemName(sheep, 'Sheep').
+itemName(goat, 'Goat').
+
 itemName(chicken_meat, 'Chicken Meat').
 itemName(cow_meat, 'Cow Meat').
 itemName(goat_meat, 'Goat Meat').
@@ -140,6 +158,12 @@ itemName(tuna, 'Tuna').
 itemName(shovel, 'Shovel').
 itemName(meat_knife, 'Meat Knife').
 itemName(fishing_net, 'Fishing Net').
+
+itemName(potion_fishing_level, 'F15h1nG Potion').
+itemName(potion_ranching_level, 'R4nch1n6 Potion').
+itemName(potion_farming_level, 'F@rM!nG Potion').
+itemName(potion_player_level, '66 64M1N6 Potion').
+itemName(potion_super_level, '5UP3R 66 64M1N6 Potion').
 
 % Item Grades
 itemGrade(1, 'Normal').

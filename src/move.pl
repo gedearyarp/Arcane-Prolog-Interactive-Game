@@ -4,6 +4,7 @@
 :- dynamic(inQuest/1).
 :- dynamic(inHouse/1).
 :- dynamic(inMarket/1).
+:- dynamic(inAlchemist/1).
 
 hitEdge :- 
     write('You\'re in the edge of the map. We are sorry, but you can\'t move any further, try using \'map.\''), nl.
@@ -29,6 +30,18 @@ encounterQuest(X, Y) :-
 encounterWater(X, Y) :-
     mapObject(X, Y, 'o'),
     write('You can\'t go into water'), nl.
+
+encounterAlchemist(X, Y) :-
+    mapObject(X, Y, 'A'),
+    write('You encountered an alchemist.'), nl.
+
+enterAlchemist(X, Y) :-
+    (mapObject(X, Y, 'A') ->
+    (\+inAlchemist(_) -> asserta(inAlchemist(true));
+    retract(inAlchemist(_)), asserta(inAlchemist(true)));    
+
+    (\+inAlchemist(_) -> asserta(inAlchemist(false));
+    retract(inAlchemist(_)), asserta(inAlchemist(false)))).
 
 aroundWater(X, Y) :-
     X1 is X + 1,
@@ -68,6 +81,7 @@ w :-
     (encounterMarket(X, Y1);
     encounterRanch(X, Y1);
     encounterHouse(X, Y1);
+    encounterAlchemist(X, Y1);    
     encounterQuest(X, Y1)), !,
     retract(mapObject(X, Y, 'P')),
     asserta(mapObject(X,Y1,'P')).
@@ -108,6 +122,7 @@ d :-
     (encounterMarket(X1, Y);
     encounterRanch(X1, Y);
     encounterHouse(X1, Y);
+    encounterAlchemist(X1, Y);
     encounterQuest(X1, Y)), !,
     retract(mapObject(X, Y, 'P')),
     asserta(mapObject(X1,Y,'P')).

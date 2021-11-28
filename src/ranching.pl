@@ -3,8 +3,6 @@
 :- dynamic(cooldownCollect/2).
 
 /* To Do:
-    - cara buat access owned animal masih not fixed
-    - insert ranch production to player's inventory
     - buying animal resulting in:
         cooldownCollect(Animal, Cooldown) --> do nothing if animal is owned; asserta cooldownCollect ngikutin cooldownAnimal if not owned before
         fedAnimal(Animal, Boolean) --> retract and asserta fedAnimal(Animal, true) if animal owned; asserta only if not owned before
@@ -52,14 +50,6 @@ expAnimalProduction(chicken, 12).
 expAnimalProduction(sheep, 30).
 expAnimalProduction(cow, 25).
 expAnimalProduction(goat, 20).
-
-
-/* TRIAL 
-inventory(chicken, 2).
-inventory(chicken_feed, 4).
-cooldownCollect(chicken, 3).
-fedAnimal(chicken, false).
-collectAnimal(chicken, true). */
 
 
 /* Add Ranching Exp */
@@ -118,12 +108,7 @@ addExpRanching(RanchingExp) :-
     asserta(ranchingExp(CurrentExp))).
 
 
-/* Feeding */
-/* Reduction process */
-feedReduction(AnimalFeed, Count) :-
-    retract(inventory(AnimalFeed, PrevQty)),    
-    CurrentQty is PrevQty - Count,
-    asserta(inventory(AnimalFeed, CurrentQty)).   
+/* Feeding */  
 feedCooldown(Animal) :-
     cooldownCollect(Animal, PrevCooldown),
     retract(cooldownCollect(Animal, PrevCooldown)),
@@ -137,23 +122,22 @@ feedCooldown(Animal) :-
     asserta(collectAnimal(Animal, true));  
 
     asserta(cooldownCollect(Animal, CurrentCooldown))).
-/* Feeding process */
 feed(Animal) :-
-    (\+inventory(Animal, _) ->
+    (\+member(Animal, Inventory) ->
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
-    inventory(Animal, Count),
+    cntItemInventory(Animal, Inventory, Count),
     (Animal = chicken -> AnimalFeed = chicken_feed;
     Animal = cow -> AnimalFeed = cow_feed;
     Animal = sheep -> AnimalFeed = sheep_feed;
     Animal = goat -> AnimalFeed = goat_feed),
-    inventory(AnimalFeed, Qty),
+    cntItemInventory(AnimalFeed, Inventory, Qty),
     
     (fedAnimal(Animal, false) ->
     (Qty < Count ->
     write('You don\'t have enough '), write(Animal), write(' feed.'), nl;
 
-    feedReduction(AnimalFeed, Count),
+    throwItem(AnimalFeed, Count),
     retract(fedAnimal(Animal, false)),
     asserta(fedAnimal(Animal, true)),
     write('You finished feeding your '), write(Animal), write('(s).'), nl);
@@ -164,10 +148,10 @@ feed(Animal) :-
 
 /* Collecting Animal Production */
 collect(Animal) :-
-    (\+inventory(Animal, _) ->
+    (\+member(Animal, Inventory) ->
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
-    inventory(Animal, Count),
+    cntItemInventory(Animal, Inventory, Count),
     ranchingLevel(Level),
     
     (collectAnimal(Animal, true) ->
@@ -196,17 +180,18 @@ ranch :-
     (canRanch(true) ->
     write('Welcome to the Ranch!'), nl, 
     
-    (\+inventory(chicken, _), \+inventory(sheep, _), \+inventory(cow, _), \+inventory(goat, _) ->
+    (\+member(chicken, Inventory), \+member(sheep, Inventory), \+member(cow, Inventory), \+member(goat, Inventory) ->
     write('You have no animals. Go buy some in the marketplace!'), nl;
     
     write('You have:'), nl,
-    (inventory(chicken, Count) -> write(Count), write(' chicken'), nl; write('')),
-    (inventory(sheep, Count) -> write(Count), write(' sheep'), nl; write('')),
-    (inventory(cow, Count) -> write(Count), write(' cow'), nl; write('')),
-    (inventory(goat, Count) -> write(Count), write(' goat'), nl; write('')),  
+    (cntItemInventory(chicken, Inventory, Count) -> write(Count), write(' chicken'), nl; write('')),
+    (cntItemInventory(sheep, Inventory, Count) -> write(Count), write(' sheep'), nl; write('')),
+    (cntItemInventory(cow, Inventory, Count) -> write(Count), write(' cow'), nl; write('')),
+    (cntItemInventory(goat, Inventory, Count) -> write(Count), write(' goat'), nl; write('')),  
     write('What do you want to do?'), nl,
     write('1. Feed animal'), nl,
     write('2. Collect animal\'s production'), nl,
+    write('3. Exit ranch'), nl,
     write('Enter command: '), read(Input), nl,
     (Input =:= 1 ->
     write('Which animal would you like to feed?'), nl,
@@ -219,7 +204,7 @@ ranch :-
     InputAnimal =:= 2 -> feed(cow);
     InputAnimal =:= 3 -> feed(sheep);
     InputAnimal =:= 4 -> feed(goat);
-    write('Wrong input! Please input the right command'), nl, ranch);
+    write('Wrong input! Please input the right command'), nl);
     
     Input =:= 2 ->
     write('Which animal\'s production would you like to collect?'), nl,
@@ -232,8 +217,11 @@ ranch :-
     InputAnimal =:= 2 -> collect(cow);
     InputAnimal =:= 3 -> collect(sheep);
     InputAnimal =:= 4 -> collect(goat);
-    write('Wrong input! Please input the right command'), nl, ranch);
+    write('Wrong input! Please input the right command'), nl);
+
+    Input =:= 3 ->
+    write('Exiting ranch...'), nl;
     
-    write('Wrong input! Please input the right command'), nl, ranch));
+    write('Wrong input! Please input the right command'), nl));
 
     write('You\'re not in Ranch.'), nl).
