@@ -3,8 +3,6 @@
 :- dynamic(canPlant/3).
 
 /* To Do:
-    - cara buat access owned seeds masih not fixed
-    - insert crop to inventory
     - pas bobo, cek mapObject yang ada crop symbolnya, terus harvestCooldown(_, _, Crop) */
 
 
@@ -56,10 +54,6 @@ cooldownCrop(grape, 5).
 cooldownCrop(tomato, 3).
 cooldownCrop(potato, 5).
 cooldownCrop(eggplant, 2).
-
-
-/* TRIAL  
-inventory(corn_seed, 4). */
 
 
 /* Add Farming Exp */
@@ -118,14 +112,12 @@ addExpFarming(FarmingExp) :-
 
 /* Planting Seeds */
 plantSeed(Seed) :-
-    (\+inventory(Seed, _) ->
+    (\+member(Seed, Inventory) ->
     write('You don\'t have that seed!'), nl;
     
-    inventory(Seed, PrevCount) ->
+    member(Seed, Inventory) ->
     % Inventory Control
-    retract(inventory(Seed, PrevCount)),
-    Count is PrevCount - 1,
-    asserta(inventory(Seed, Count)),
+    throwItem(Seed),
     % Map Control
     cropSeed(Crop, Seed),
     cropSymbol(Crop, Symbol),
@@ -188,14 +180,19 @@ plant :-
     mapObject(X, Y, 'P'),
     
     (canPlant(X, Y, true) ->
+    currInventory(Inventory),
+    cntCategoryInventory(seed, Inventory, SeedQty),
+    
+    (SeedQty =:= 0 -> write('You have no seeds. Go buy some in the marketplace!'), nl;
+    
     write('You have:'), nl,
-    (inventory(corn_seed, Count) -> write('- '), write(Count), write(' corn seed'), nl; write('')),
-    (inventory(apple_seed, Count) -> write('- '), write(Count), write(' apple seed'), nl; write('')),
-    (inventory(watermelon_seed, Count) -> write('- '), write(Count), write(' watermelon seed'), nl; write('')),
-    (inventory(grape_seed, Count) -> write('- '), write(Count), write(' grape seed'), nl; write('')),
-    (inventory(tomato_seed, Count) -> write('- '), write(Count), write(' tomato seed'), nl; write('')),
-    (inventory(potato_seed, Count) -> write('- '), write(Count), write(' potato seed'), nl; write('')),
-    (inventory(eggplant_seed, Count) -> write('- '), write(Count), write(' eggplant seed'), nl; write('')), 
+    (cntItemInventory(corn_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' corn seed'), nl; write(''))),
+    (cntItemInventory(apple_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' apple seed'), nl; write(''))),
+    (cntItemInventory(watermelon_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' watermelon seed'), nl; write(''))),
+    (cntItemInventory(grape_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' grape seed'), nl; write(''))),
+    (cntItemInventory(tomato_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' tomato seed'), nl; write(''))),
+    (cntItemInventory(potato_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' potato seed'), nl; write(''))),
+    (cntItemInventory(eggplant_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' eggplant seed'), nl; write(''))), 
     write('What do you want to plant?'), nl,    
     read(Input), nl,
     (Input = 'corn' -> plantSeed(corn_seed);
@@ -205,7 +202,7 @@ plant :-
     Input = 'tomato' -> plantSeed(tomato_seed);
     Input = 'potato' -> plantSeed(potato_seed);
     Input = 'eggplant' -> plantSeed(eggplant_seed);
-    write('What kind of seed is that?'), nl);
+    write('What kind of seed is that?'), nl));
     
     write('You can\'t plant seeds there...'), nl).
 harvest :-
@@ -216,6 +213,7 @@ harvest :-
     retract(mapObject(X, Y, Symbol)),
     retract(harvestCrop(X, Y, Crop, true)),
     write('You harvested '), write(Crop), write('!'), nl,
+    addItem(Crop),
     expFarming(Crop, FarmingExp),
     addExpFarming(FarmingExp),
     decrementCrop;

@@ -1,6 +1,5 @@
 /* To Do:
-    - fishing rod level effect on exp or drop rate
-    - insert fish to player's inventory */
+    - fishing rod level effect on exp or drop rate */
 
 
 /* Fish List */
@@ -129,6 +128,7 @@ fish :-
 
     isFish(Fish) ->
     write('You got '), write(Fish), write('!'), nl,
+    addItem(Fish),
     expFishing(Fish, FishingExp),
     addExpFishing(FishingExp),
     decrementFish);
