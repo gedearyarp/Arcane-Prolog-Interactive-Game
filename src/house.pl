@@ -2,10 +2,12 @@
 :- dynamic(day/1).
 :- dynamic(alchemist/1).
 
+:- dynamic(inHouse/1).
 % day(9).
 % startGame(true).
 
 house :-
+    inHouse(_),
     \+(day(50)),
     write('What do you want to do in this sweet, cozy home?'),nl,
     write('1. Sleep'),nl,
@@ -20,12 +22,18 @@ house :-
     !.
 
 house :-
+    inHouse(_),
     day(50),
     write('This might be your last day...'),nl,
     write('You look up to the sky and see that you failed...'),nl,
     write('After all, why are you here at the first place?'), nl,
     write('You failed.'),nl,
     retract(startGame(_)),
+    !.
+
+house :-
+    \+inHouse(_),
+    write('Salah rumah woi!!!!'), nl,
     !.
 
 sleep :-

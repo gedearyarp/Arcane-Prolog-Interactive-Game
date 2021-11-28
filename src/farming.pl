@@ -187,13 +187,13 @@ plant :-
     (SeedQty =:= 0 -> write('You have no seeds. Go buy some in the marketplace!'), nl;
     
     write('You have:'), nl,
-    (cntItemInventory(corn_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' corn seed'), nl; write(''))),
-    (cntItemInventory(apple_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' apple seed'), nl; write(''))),
-    (cntItemInventory(watermelon_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' watermelon seed'), nl; write(''))),
-    (cntItemInventory(grape_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' grape seed'), nl; write(''))),
-    (cntItemInventory(tomato_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' tomato seed'), nl; write(''))),
-    (cntItemInventory(potato_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' potato seed'), nl; write(''))),
-    (cntItemInventory(eggplant_seed, Inventory, Count), (Count =\= 0 -> write('- '), write(Count), write(' eggplant seed'), nl; write(''))), 
+    (cntItemInventory(corn_seed, Inventory, CountCorn), (CountCorn =\= 0 -> write('- '), write(CountCorn), write(' corn seed'), nl; write(''))),
+    (cntItemInventory(apple_seed, Inventory, CountApple), (CountApple =\= 0 -> write('- '), write(CountApple), write(' apple seed'), nl; write(''))),
+    (cntItemInventory(watermelon_seed, Inventory, CountWatermelon), (CountWatermelon =\= 0 -> write('- '), write(CountWatermelon), write(' watermelon seed'), nl; write(''))),
+    (cntItemInventory(grape_seed, Inventory, CountGrape), (CountGrape =\= 0 -> write('- '), write(CountGrape), write(' grape seed'), nl; write(''))),
+    (cntItemInventory(tomato_seed, Inventory, CountTomato), (CountTomato =\= 0 -> write('- '), write(CountTomato), write(' tomato seed'), nl; write(''))),
+    (cntItemInventory(potato_seed, Inventory, CountPotato), (CountPotato =\= 0 -> write('- '), write(CountPotato), write(' potato seed'), nl; write(''))),
+    (cntItemInventory(eggplant_seed, Inventory, CountEggplant), (CountEggplant =\= 0 -> write('- '), write(CountEggplant), write(' eggplant seed'), nl; write(''))), 
     write('What do you want to plant?'), nl,    
     read(Input), nl,
     (Input = 'corn' -> plantSeed(corn_seed);

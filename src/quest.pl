@@ -8,7 +8,7 @@
 % :- dynamic(totalGold/1).
 % inQuest(true).
 % gold(500).
-% xp(5).
+% exp(5).
 % totalGold(200).
 
 
@@ -48,7 +48,7 @@ checkQuest :-
     currentQuest(G,X),
     gold(OldG),
     totalGold(OldTGold),
-    xp(OldX),
+    exp(OldX),
     NewG is G + OldG,
     NewTGold is OldTGold + G,
     NewX is X + OldX,
@@ -56,8 +56,8 @@ checkQuest :-
     asserta(gold(NewG)),
     retract(totalGold(_)),
     asserta(totalGold(NewTGold)),
-    retract(xp(_)),
-    asserta(xp(NewX)),
+    retract(exp(_)),
+    asserta(exp(NewX)),
     retract(currentQuest(_,_)),
     write('Selamat, anda telah menyelesaikan Quest!'), nl,
     write('Gold yang didapat: '), write(G), nl,

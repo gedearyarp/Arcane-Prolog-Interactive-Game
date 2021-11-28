@@ -1,13 +1,13 @@
 % TODO : Check if in market, Equipments level, Sync inventory
 
 % DEBUG CODE STARTS HERE
-% :- dynamic(gold/1).
-% :- include('inventory.pl').
-% :- include('items.pl').
-% :- dynamic(inMarket/1).
-% inMarket(t).
+:- dynamic(gold/1).
+:- include('inventory.pl').
+:- include('items.pl').
+:- dynamic(inMarket/1).
+inMarket(t).
 
-% gold(5000).
+gold(5000).
 % DEBUG CODE ENDS HERE
 
 market :-
@@ -108,6 +108,8 @@ exitMarket :-
     write('Buh-bye!'), nl,
     !.
 
-% jual :-
+jual :-
+    showInventory,
+    !.
 
 % upgradeEq :-
