@@ -70,7 +70,7 @@ buyAnimal :-
     printMarket(ListNama), nl,
     write('Pilihanmu (kode): '),
     read(Input), nl,
-    (item(animal,Input) -> buyItem(Input);
+    (item(animal,Input) -> buyItem(Input), initAnimal(Input);
     \+item(animal,Input) -> !, write('Tidak ada item itu hei! Balik sana ke market!'), nl, nl, market),
     !.
 

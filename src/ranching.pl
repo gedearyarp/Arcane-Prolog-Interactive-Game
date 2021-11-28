@@ -51,6 +51,20 @@ expAnimalProduction(cow, 25).
 expAnimalProduction(goat, 20).
 
 
+/* Animal Initialization */
+initAnimal(Animal) :-
+    (\+member(Animal, Inventory) ->
+    ranchingLevel(Level),
+    cooldownAnimal(Level, Animal, Cooldown),
+    asserta(cooldownCollect(Animal, Cooldown)),
+    asserta(fedAnimal(Animal, true)),
+    asserta(collectAnimal(Animal, false));
+    
+    member(Animal, Inventory) ->
+    retract(fedAnimal(Animal, _)),
+    asserta(fedAnimal(Animal, true)))
+
+
 /* Add Ranching Exp */
 /* Ranching exp calculation */
 expRanching(Animal, Count, RanchingExp) :-
