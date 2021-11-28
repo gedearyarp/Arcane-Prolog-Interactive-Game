@@ -32,8 +32,11 @@ encounterWater(X, Y) :-
     write('You can\'t go into water'), nl.
 
 encounterAlchemist(X, Y) :-
+    mapObject(X, Y, 'A'),
+    write('You encountered an alchemist.'), nl.
+
+enterAlchemist(X, Y) :-
     (mapObject(X, Y, 'A') ->
-    write('You encountered an alchemist.'), nl,
     (\+inAlchemist(_) -> asserta(inAlchemist(true));
     retract(inAlchemist(_)), asserta(inAlchemist(true)));    
 
