@@ -185,14 +185,15 @@ ranch :-
     write('You have no animals. Go buy some in the marketplace!'), nl;
     
     write('You have:'), nl,
-    (cntItemInventory(chicken, Inventory, Count) -> write(Count), write(' chicken'), nl; write('')),
-    (cntItemInventory(sheep, Inventory, Count) -> write(Count), write(' sheep'), nl; write('')),
-    (cntItemInventory(cow, Inventory, Count) -> write(Count), write(' cow'), nl; write('')),
-    (cntItemInventory(goat, Inventory, Count) -> write(Count), write(' goat'), nl; write('')),  
+    (cntItemInventory(chicken, Inventory, CountChicken), (CountChicken =\= 0 -> write('- '), write(CountChicken), write(' chicken'), nl; write(''))),
+    (cntItemInventory(sheep, Inventory, CountSheep), (CountSheep =\= 0 -> write('- '), write(CountSheep), write(' sheep'), nl; write(''))),
+    (cntItemInventory(cow, Inventory, CountCow), (CountCow =\= 0 -> write('- '), write(CountCow), write(' cow'), nl; write(''))),
+    (cntItemInventory(goat, Inventory, CountGoat), (CountGoat =\= 0 -> write('- '), write(CountGoat), write(' goat'), nl; write(''))),  
     write('What do you want to do?'), nl,
     write('1. Feed animal'), nl,
     write('2. Collect animal\'s production'), nl,
-    write('3. Exit ranch'), nl,
+    write('3. Slaughter animal'), nl,
+    write('4. Exit ranch'), nl,
     write('Enter command: '), read(Input), nl,
     (Input =:= 1 ->
     write('Which animal would you like to feed?'), nl,
@@ -221,6 +222,19 @@ ranch :-
     write('Wrong input! Please input the right command'), nl);
 
     Input =:= 3 ->
+    write('Which animal do you want to slaughter?'), nl,
+    write('1. Chicken'), nl,
+    write('2. Cow'), nl,
+    write('3. Sheep'), nl,
+    write('4. Goat'), nl,
+    write('Enter command: '), read(InputAnimal), nl,
+    (InputAnimal =:= 1 -> throwItem(chicken), addItem(chicken_meat), write('You get chicken meat!'), nl;
+    InputAnimal =:= 2 -> throwItem(cow), addItem(cow_meat), write('You get cow meat!'), nl;
+    InputAnimal =:= 3 -> throwItem(sheep), addItem(sheep_meat), write('You get sheep meat!'), nl;
+    InputAnimal =:= 4 -> throwItem(goat), addItem(goat_meat), write('You get goat meat!'), nl;
+    write('Wrong input! Please input the right command'), nl);  
+
+    Input =:= 4 ->
     write('Exiting ranch...'), nl;
     
     write('Wrong input! Please input the right command'), nl));
