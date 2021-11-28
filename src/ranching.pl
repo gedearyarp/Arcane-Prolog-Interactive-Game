@@ -158,10 +158,10 @@ collect(Animal) :-
     retract(collectAnimal(Animal, true)),
     asserta(collectAnimal(Animal, false)),
     write('You collected '), write(Count), 
-    (Animal = chicken -> write(' egg(s)!'), nl;
-    Animal = cow -> write(' bottle(s) of cow milk!'), nl;
-    Animal = sheep -> write(' wool(s)!'), nl;
-    Animal = goat -> write(' bottle(s) of goat milk!'), nl),
+    (Animal = chicken -> write(' egg(s)!'), nl, addItem(egg, Count);
+    Animal = cow -> write(' bottle(s) of cow milk!'), nl, addItem(cow_milk, Count);
+    Animal = sheep -> write(' wool(s)!'), nl, addItem(wool, Count);
+    Animal = goat -> write(' bottle(s) of goat milk!'), nl, addItem(goat_milk, Count)),
 
     expRanching(Animal, Count, RanchingExp),
     addExpRanching(RanchingExp),
