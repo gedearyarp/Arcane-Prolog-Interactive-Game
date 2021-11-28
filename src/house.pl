@@ -1,5 +1,4 @@
 :- dynamic(diary/2).
-:- dynamic(day/1).
 :- dynamic(alchemist/1).
 
 % :- dynamic(inHouse/1).
