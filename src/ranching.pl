@@ -158,10 +158,10 @@ collect(Animal) :-
     retract(collectAnimal(Animal, true)),
     asserta(collectAnimal(Animal, false)),
     write('You collected '), write(Count), 
-    (Animal = chicken -> write(' egg(s)!'), nl;
-    Animal = cow -> write(' bottle(s) of cow milk!'), nl;
-    Animal = sheep -> write(' wool(s)!'), nl;
-    Animal = goat -> write(' bottle(s) of goat milk!'), nl),
+    (Animal = chicken -> write(' egg(s)!'), nl, addItem(egg, Count);
+    Animal = cow -> write(' bottle(s) of cow milk!'), nl, addItem(cow_milk, Count);
+    Animal = sheep -> write(' wool(s)!'), nl, addItem(wool, Count);
+    Animal = goat -> write(' bottle(s) of goat milk!'), nl, addItem(goat_milk, Count)),
 
     expRanching(Animal, Count, RanchingExp),
     addExpRanching(RanchingExp),
@@ -179,8 +179,9 @@ ranch :-
     inRanch(X, Y),
     (canRanch(true) ->
     write('Welcome to the Ranch!'), nl, 
-    
-    (\+member(chicken, Inventory), \+member(sheep, Inventory), \+member(cow, Inventory), \+member(goat, Inventory) ->
+    currInventory(Inventory),
+    cntCategoryInventory(animal, Inventory, AnimalQty),
+    (AnimalQty == 0 ->
     write('You have no animals. Go buy some in the marketplace!'), nl;
     
     write('You have:'), nl,

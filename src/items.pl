@@ -1,3 +1,4 @@
+:- dynamic(equipment/2).
 
 /* FARMING SEEDS */
 item(seed, corn_seed).
@@ -54,10 +55,24 @@ item(potion, potion_farming_level).
 item(potion, potion_player_level).
 item(potion, potion_super_level).
 
-/* EQUIPMENTS */
-% asserta(item(equipment, shovel, 1)).
-% asserta(item(equipment, meat_knife, 1)).
-% asserta(item(equipment, fishing_net, 1)).
+/* EQUIPMENT ITEMS */
+item(equipment, shovel).
+item(equipment, fishing_rod).
+item(equipment, knife).
+
+/* EQUIPMENT DETAIL */
+equipment(shovel, 1).
+equipment(fishing_rod, 1).
+equipment(knife, 1).
+
+/* PRICE EQUIPMENT */
+priceEquipment(shovel, 2, 1000).
+priceEquipment(fishing_rod, 2, 1000).
+priceEquipment(knife, 2, 1000).
+
+priceEquipment(shovel, 3, 1500).
+priceEquipment(fishing_rod, 3, 1500).
+priceEquipment(knife, 3, 1500).
 
 /* PRICE ITEMS */
 priceItem(corn_seed, 15).
@@ -102,17 +117,17 @@ priceItem(sardine, 75).
 priceItem(shark, 250).
 priceItem(tuna, 225).
 
-priceItem(shovel, 750).
-priceItem(meat_knife, 750).
-priceItem(fishing_net, 750).
-
 priceItem(potion_fishing_level, 3000).
 priceItem(potion_ranching_level, 3000).
 priceItem(potion_farming_level, 3000).
 priceItem(potion_player_level, 4000).
 priceItem(potion_super_level, 5000).
 
-% Item Names
+/* ITEMS NAME */
+itemName(shovel, 'Shovel').
+itemName(fishing_rod, 'Fishing Rod').
+itemName(knife, 'Knife').
+
 itemName(corn_seed, 'Corn Seed').
 itemName(apple_seed, 'Apple Seed').
 itemName(watermelon_seed, 'Watermelon Seed').
@@ -155,24 +170,15 @@ itemName(sardine, 'Sardine').
 itemName(shark, 'Shark').
 itemName(tuna, 'Tuna').
 
-itemName(shovel, 'Shovel').
-itemName(meat_knife, 'Meat Knife').
-itemName(fishing_net, 'Fishing Net').
-
 itemName(potion_fishing_level, 'F15h1nG Potion').
 itemName(potion_ranching_level, 'R4nch1n6 Potion').
 itemName(potion_farming_level, 'F@rM!nG Potion').
 itemName(potion_player_level, '66 64M1N6 Potion').
 itemName(potion_super_level, '5UP3R 66 64M1N6 Potion').
 
-% Item Grades
+/* ITEMS GRADE */
 itemGrade(1, 'Normal').
 itemGrade(2, 'Improved').
 itemGrade(3, 'Antique').
 itemGrade(4, 'Epic').
 itemGrade(5, 'Exotic').
-
-/* LEVEL UP EQUIPMENTS */
-
-
-/* USE ITEM */

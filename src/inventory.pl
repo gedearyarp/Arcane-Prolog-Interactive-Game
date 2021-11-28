@@ -78,7 +78,7 @@ cntItemInventory(H, [_|T], N) :-
     N is NewN, !.
 
 % COUNT SPECIFIC CATEGORY IN INVENTORY %
-cntCategoryInventory(Ctg, [], 0).
+cntCategoryInventory(_, [], 0).
 
 cntCategoryInventory(Ctg, [H|T],N) :- 
     item(Category, H),
@@ -89,10 +89,10 @@ cntCategoryInventory(Ctg, [H|T],N) :-
     N is NewN, !
     ).
 
-% testctg :-
-%     currInventory(Inventory),
-%     cntCategoryInventory(animal, Inventory, Quantity),
-%     format('kategori hewan ~w',[Quantity]).
+testctg :-
+    currInventory(Inventory),
+    cntCategoryInventory(animal, Inventory, Quantity),
+    format('kategori hewan ~w',[Quantity]).
 
 % COUNT SIZE OF INVENTORY %
 cntInventory([], 0).
@@ -119,6 +119,7 @@ printInventory([H|T]) :-
     printInventory(T), !.
 
 printRemoveableInventory([]) :- !.
+
 printRemoveableInventory([H|T]) :-
     currInventory(Inventory),
     item(Category, H),
@@ -145,9 +146,7 @@ showUseableInventory :-
     currInventory(Inventory),
     (Inventory = [],
     write('Your inventory is empty\n'),!;
-    maxInventory(MaxInventory),
-    sizeInventory(SizeInventory),
-    format('Your inventory (~w / ~w)\n',[SizeInventory, MaxInventory]),
+    write('Inventory\n'),
     sort(Inventory),
     printInventory(Inventory),! 
     ).
@@ -156,7 +155,7 @@ showRemoveableInventory :-
     currInventory(Inventory),
     (Inventory = [],
     write('Your inventory is empty\n'),!;
-    write('Your inventory\n'),
+    write('Inventory\n'),
     sort(Inventory),
     printRemoveableInventory(Inventory),! 
     ).
