@@ -22,17 +22,21 @@ initQuest :-
 
 initQuest :-
     \+(currentQuest(_,_)),
+    level(Level),
     random(1,10,Crop),
     random(1,10,Fish),
     random(1,10,Dairy),
-    G is (Crop+Fish+Dairy)*10,
-    X is (Crop+Fish+Dairy)*10,
+    Temp is Level * 0.75,
+    LevelMultiplier is ceiling(Temp),
+    G is (Crop+Fish+Dairy)*5*LevelMultiplier,
+    X is (Crop+Fish+Dairy)*10*LevelMultiplier,
     asserta(currentQuest(G,X)),
     asserta(fishQuest(Fish)),
     asserta(cropQuest(Crop)),
     asserta(dairyQuest(Dairy)),
     write('Anda mendapat quest baru. Kumpulkan '), write(Crop), write(' buah crop, '),
     write(Fish), write(' ekor ikan, dan '), write(Dairy), write(' buah dairy. Goodluck!'), nl,
+    format('Bounty: ~w Gold, ~w XP\n', [G,X]),
     retract(mapObject(_,_,'Q')),
     !.
 
