@@ -1,10 +1,12 @@
 :- dynamic(startGame/1).
 :- include('player.pl').
 :- include('map.pl').
-% :- include('quest.pl').
+:- include('quest.pl').
+:- include('house.pl').
 :- include('fishing.pl').
 :- include('ranching.pl').
-% :- include('farming.pl').
+:- include('farming.pl').
+:- include('alchemist.pl').
 :- include('marketplace.pl').
 :- include('move.pl').
 :- include('help.pl').

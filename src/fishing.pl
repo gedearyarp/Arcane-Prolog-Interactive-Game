@@ -130,6 +130,7 @@ fish :-
     isFish(Fish) ->
     write('You got '), write(Fish), write('!'), nl,
     expFishing(Fish, FishingExp),
-    addExpFishing(FishingExp));
+    addExpFishing(FishingExp),
+    decrementFish);
    
     write('You can\'t go fishing there...'), nl).              

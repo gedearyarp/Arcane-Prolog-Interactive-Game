@@ -10,6 +10,8 @@
 :- dynamic(exp/1).
 :- dynamic(baseExp/1).
 :- dynamic(gold/1).
+:- dynamic(totalGold/1).
+:- dynamic(day/1).
 
 % job('').
 % level(1).
@@ -28,9 +30,9 @@ initPlayer :-   write('In order to play, please choose your role in this world(1
                 write('2. Farmer'), nl,
                 write('3. Rancher'), nl,
                 read(Input), nl, 
-                (Input =:= 1 -> asserta(job('Fisherman')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(76)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500));
-                Input =:= 2 -> asserta(job('Farmer')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(76)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500));
-                Input =:= 3 -> asserta(job('Rancher')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(76)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500));
+                (Input =:= 1 -> asserta(job('Fisherman')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(76)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1));
+                Input =:= 2 -> asserta(job('Farmer')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(76)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1));
+                Input =:= 3 -> asserta(job('Rancher')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(76)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1));
                 write('Wrong input! Please input the right command'), nl, initPlayer).
 
 initPlayer :-   write('The player has already created, you can\'t initialize again.').
@@ -46,14 +48,9 @@ status :-       job(A),
                 exp(I),
                 baseExp(J), 
                 gold(K),
-                write(':\'######::\'########::::\'###::::\'########:\'##::::\'##::\'######::'), nl,
-                write('\'##... ##:... ##..::::\'## ##:::... ##..:: ##:::: ##:\'##... ##:'), nl,
-                write(' ##:::..::::: ##:::::\'##:. ##::::: ##:::: ##:::: ##: ##:::..::'), nl,
-                write('. ######::::: ##::::\'##:::. ##:::: ##:::: ##:::: ##:. ######::'), nl,    
-                write(':..... ##:::: ##:::: #########:::: ##:::: ##:::: ##::..... ##:'), nl,
-                write('\'##::: ##:::: ##:::: ##.... ##:::: ##:::: ##:::: ##:\'##::: ##:'), nl,
-                write('. ######::::: ##:::: ##:::: ##:::: ##::::. #######::. ######::'), nl,
-                write(':......::::::..:::::..:::::..:::::..::::::.......::::......:::'), nl, nl,
+                day(Day),
+                totalGold(Total),
+                writeStatusBanner,
                 write('Job              : '), write(A), nl,
                 write('Level            : '), write(B), nl,
                 write('Farming Level    : '), write(C), nl,
@@ -63,4 +60,29 @@ status :-       job(A),
                 write('Ranching Level   : '), write(G), nl,
                 write('Ranching Exp     : '), write(H), nl,
                 write('Exp              : '), write(I), write('/'), write(J), nl,
-                write('Gold             : '), write(K).
+                write('Gold             : '), write(K), nl,
+                write('Current Day      : '), write(Day), nl,
+                write('Total Gold       : '), write(Total), nl,
+                !.
+
+writeStatusBanner :-
+    write(':\'######::\'########::::\'###::::\'########:\'##::::\'##::\'######::'), nl,
+    write('\'##... ##:... ##..::::\'## ##:::... ##..:: ##:::: ##:\'##... ##:'), nl,
+    write(' ##:::..::::: ##:::::\'##:. ##::::: ##:::: ##:::: ##: ##:::..::'), nl,
+    write('. ######::::: ##::::\'##:::. ##:::: ##:::: ##:::: ##:. ######::'), nl,    
+    write(':..... ##:::: ##:::: #########:::: ##:::: ##:::: ##::..... ##:'), nl,
+    write('\'##::: ##:::: ##:::: ##.... ##:::: ##:::: ##:::: ##:\'##::: ##:'), nl,
+    write('. ######::::: ##:::: ##:::: ##:::: ##::::. #######::. ######::'), nl,
+    write(':......::::::..:::::..:::::..:::::..::::::.......::::......:::'), nl, nl,
+    !.
+
+checkEndGame :-
+    \+totalGold(20000).
+
+checkEndGame :-
+    totalGold(20000),
+    write('Congratulations! Akhirnya kelar juga nih game.'),nl,
+    write('Ini adalah stats terakhir kamu: '),
+    status,
+    write('Bye-bye! Selamat menderita kembali ^_^'),
+    !.
