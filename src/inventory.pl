@@ -6,11 +6,11 @@ maxInventory(100).
 currInventory([]).
 
 inventory :-
-    write('What do you want to do?\n'),
+    showInventory,
+    write('\nWhat do you want to do?\n'),
     write('1. Use Item\n'),
     write('2. Throw Item\n'),
-    write('3. Show Inventory\n'),
-    write('4. exit\n'),
+    write('3. exit\n'),
     write('Enter command: '), read(Input), nl,
     (
     Input == 1 -> 
@@ -18,25 +18,30 @@ inventory :-
     write('Which item do you want to use?\n'),
     write('Enter command: '), read(InputUse), nl;
 
-    Input == 2->
+    Input == 2 ->
+    sizeInventory(SizeInventory),
+    ( SizeInventory == 0 ->
+    write('Your inventory is empty, you don\'t have any items to throw.');
     showRemoveableInventory,
-    write('\nWhat do you want to throw?'),
+    write('\nWhat do you want to throw? (please input the COMMAND form) '),
     read(InputThrow), nl,
     currInventory(Inventory),
     (member(InputThrow, Inventory) -> 
     itemName(InputThrow, ItemThrowName),
-    cntItemInventory(CntThrow),
+    cntItemInventory(InputThrow, Inventory, CntThrow),
     format('You have ~w ~w. How many do you want to throw?\n', [CntThrow, ItemThrowName]),
     read(InputManyThrow), nl,
     (InputManyThrow > CntThrow ->
-    format('You don’t have enough ~w. Cancelling…\n', [ItemThrowName]);
+    format('You don’t have enough ~w. Cancelling...\n', [ItemThrowName]);
     throwItem(InputThrow, InputManyThrow),
     format('You threw away ~w ~w.\n', [InputManyThrow, ItemThrowName])
     );
-    format('You don\'t have ~w in your inventory.\n', [InputThrow])
-    ), !.
-
-    );
+    format('You don\'t have ~w in your inventory or you input the wrong command.\n', [InputThrow])
+    ), !);
+    Input == 3 -> !;
+    write('Wrong input! Please input the right command\n'),
+    inventory,
+    !).
 
 % ADD ITEM TO INVENTORY %
 addItem(Item) :-
@@ -87,12 +92,21 @@ printInventory([H|T]) :-
     item(Category, H),
     (Category == 'animal' -> !;
     cntItemInventory(H, Inventory, Quantity),
-    itemName(H, ItemName)
-    (
-    Quantity == 1 -> format('~w ~w\n',[Quantity, ItemName])), !;
-    format('~w ~ws\n',[Quantity, ItemName])),!
+    itemName(H, ItemName),
+    format('~w ~ws\n',[Quantity, ItemName]),!
     ),
     printInventory(T), !.
+
+printRemoveableInventory([]) :- !.
+printRemoveableInventory([H|T]) :-
+    currInventory(Inventory),
+    item(Category, H),
+    (Category == 'animal' -> !;
+    cntItemInventory(H, Inventory, Quantity),
+    itemName(H, ItemName),
+    format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!
+    ),
+    printRemoveableInventory(T), !.
 
 % SHOW INVENTORY %
 showInventory :-
@@ -123,7 +137,7 @@ showRemoveableInventory :-
     write('Your inventory is empty\n'),!;
     write('Your inventory\n'),
     sort(Inventory),
-    printInventory(Inventory),! 
+    printRemoveableInventory(Inventory),! 
     ).
 
 % USE ITEM FROM INVENTORY %
