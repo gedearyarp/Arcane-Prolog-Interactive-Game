@@ -24,7 +24,8 @@ house :-
     (X =:= 1 -> sleep;
     X =:= 2 -> writeDiary;
     X =:= 3 -> readDiary;
-    X =:= 4 -> exitHouse),nl,
+    X =:= 4 -> exitHouse;
+    house, write('Wrong input please choose a number (1-4).')),nl,
     !.
 
 house :-

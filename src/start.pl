@@ -54,9 +54,9 @@ start :-
     repeat,
     checkLevelUp,
     nl, write('> '),
-    read(X),
     (checkEndGame, !;
     X == 'exit' -> !, write('Thank you for wasting such a precious time to play this game :)'), nl;
+    (catch(read(X), _, true), true),
     (catch(call(X), _, write('Wrong command, use \'help.\' to check all the valid command in ARCANE.')), fail)).
 
 start :-

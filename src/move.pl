@@ -165,6 +165,7 @@ s :-
     Y1 is Y+1,
     (encounterMarket(X, Y1);
     encounterRanch(X, Y1);
+    encounterAlchemist(X, Y1);
     encounterHouse(X, Y1);
     encounterQuest(X, Y1)), !,
     retract(mapObject(X, Y, 'P')),
@@ -204,6 +205,7 @@ a :-
     X1 is X-1,
     (encounterMarket(X1, Y);
     encounterRanch(X1, Y);
+    encounterAlchemist(X1,Y);
     encounterHouse(X1, Y);
     encounterQuest(X1, Y)), !,
     retract(mapObject(X, Y, 'P')),

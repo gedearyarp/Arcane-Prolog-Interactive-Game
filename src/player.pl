@@ -101,7 +101,7 @@ checkEndGame :-
     totalGold(TotalGold),
     (TotalGold >= 20000 ->
     write('Congratulations! Akhirnya kelar juga nih game.'),nl,
-    write('Ini adalah stats terakhir kamu: '),
+    write('Ini adalah stats terakhir kamu: '), nl,
     status,
     write('Bye-bye! Selamat menderita kembali ^_^')).
 
@@ -199,6 +199,11 @@ checkLevelUp :-
 cheatGold :-
     retract(gold(_)),
     asserta(gold(999999)),
+    !.
+
+endGAME :-
+    retract(totalGold(_)),
+    asserta(totalGold(999999)),
     !.
 
 reduceEnergy(Power) :-

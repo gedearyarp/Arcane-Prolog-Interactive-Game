@@ -24,7 +24,8 @@ market :-
     (X =:= 1 -> beli;
     X =:= 2 -> jual;
     X =:= 3 -> upgradeEq;
-    X =:= 4 -> exitMarket),nl,
+    X =:= 4 -> exitMarket;
+    market, write('Wrong input, please choose a number (1-4)')),nl,
     !.
 
 market :-
