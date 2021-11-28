@@ -1,13 +1,15 @@
 % TODO : Check if in market, Equipments level, Sync inventory
 
 % DEBUG CODE STARTS HERE
-:- dynamic(gold/1).
-:- include('inventory.pl').
-:- include('items.pl').
-:- dynamic(inMarket/1).
-inMarket(t).
+% :- dynamic(gold/1).
+% :- include('inventory.pl').
+% :- include('items.pl').
+% :- dynamic(inMarket/1).
+% :- dynamic(totalGold/1).
+% inMarket(t).
 
-gold(5000).
+% totalGold(5000).
+% gold(5000).
 % DEBUG CODE ENDS HERE
 
 market :-
@@ -109,7 +111,37 @@ exitMarket :-
     !.
 
 jual :-
-    showInventory,
+    currInventory(Inventory),
+    showRemoveableInventory, nl,
+    write('Pilihanmu (COMMAND): '), read(Input),nl,
+    (\+member(Input, Inventory) -> itemName(Input, ItemName), format('There is no ~w in your inventory!\n', [ItemName]), market;
+    member(Input, Inventory) -> write('Mau jual berapa? '), read(Amount), nl, jualItem(Input, Amount)),
     !.
+
+jualItem(_, Amount) :-
+    Amount < 1,
+    write('Invalid amount. Mengembalikan ke menu jual...'),
+    jual,
+    !.
+
+jualItem(Input, Amount) :-
+    gold(G),
+    totalGold(TG),
+    throwItem(Input,Amount),
+    priceItem(Input,Price),
+    itemName(Input, ItemName),
+    TotalPrice is Amount * Price,
+    GNew is G + TotalPrice,
+    TGNew is TG + TotalPrice,
+    retract(gold(G)),
+    asserta(gold(GNew)),
+    retract(totalGold(TG)),
+    asserta(totalGold(TGNew)),
+    format('Berhasil menjual ~w sebanyak ~w buah!', [ItemName,Amount]), nl,
+    format('Anda mendapatkan ~w gold.', [TotalPrice]),nl,
+    write('Mengembalikan ke menu market..'), nl, nl,
+    market,
+    !.
+
 
 % upgradeEq :-
