@@ -227,7 +227,7 @@ useUseable(Item) :-
     CurrentEnergy is Energy + Power,
     (CurrentEnergy > 100 -> CurrentEnergy is 100; write('')),
     retract(energy(Energy)),
-    asserta(energy(FinalEnergy)),
+    asserta(energy(CurrentEnergy)),
     throwItem(Item).
 
 useItemInventory(Item) :- 
@@ -257,7 +257,7 @@ throwItem(Item) :-
 
 throwItem(_, 0) :- !.
 
-throwItem(Item, Amount) :- 
+throwItem(Item, _) :- 
     currInventory(Inventory),
     \+ member(Item, Inventory), !, 
     itemName(Item, ItemName),
