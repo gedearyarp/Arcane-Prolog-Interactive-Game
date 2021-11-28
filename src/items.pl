@@ -29,10 +29,11 @@ item(ranching, chicken_meat).
 item(ranching, cow_meat).
 item(ranching, goat_meat).
 item(ranching, sheep_meat).
-item(ranching, egg).
-item(ranching, wool).
 item(ranching, cow_milk).
 item(ranching, goat_milk).
+
+item(ranchingNonUseable, egg).
+item(ranchingNonUseable, wool).
 
 /* ANIMAL ITEM */
 item(animal, chicken).
@@ -182,3 +183,26 @@ itemGrade(2, 'Improved').
 itemGrade(3, 'Antique').
 itemGrade(4, 'Epic').
 itemGrade(5, 'Exotic').
+
+/* ENERGY */
+energy(corn, 5).
+energy(apple, 6).
+energy(watermelon, 7).
+energy(grape, 4).
+energy(tomato, 8).
+energy(potato, 7).
+energy(eggplant, 6).
+
+energy(chicken_meat, 20).
+energy(cow_meat, 50).
+energy(goat_meat, 30).
+energy(sheep_meat, 40).
+energy(cow_milk, 10).
+energy(goat_milk, 10).
+
+energy(carp, 18).
+energy(eel, 17).
+energy(salmon, 30).
+energy(sardine, 15).
+energy(shark, 35).
+energy(tuna, 25).
