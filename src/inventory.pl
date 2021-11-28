@@ -14,9 +14,22 @@ inventory :-
     write('Enter command: '), read(Input), nl,
     (
     Input == 1 -> 
+    sizeUseableInventory(SizeUseableInventory),
+    (SizeUseableInventory == 0 ->
+    write('You don\'t have any usable item in your inventory.\n');
     showUseableInventory,
-    write('Which item do you want to use?\n'),
-    write('Enter command: '), read(InputUse), nl;
+    write('\nWhat do you want to use? (please input the COMMAND form) \n'), 
+    read(InputUseable), nl,
+    currInventory(Inventory),
+    (member(InputUseable, Inventory) ->
+    useItemInventory(InputUseable),
+    item(CtgUse, InputUseable),
+    (CtgUse = potion -> 
+    usePotion(InputUseable), !;
+    useUseable(InputUseable), !
+    );
+    format('You don\'t have ~w in your inventory or you input the wrong command.\n', [InputUseable]), !
+    ), !);
 
     Input == 2 ->
     sizeInventory(SizeInventory),
@@ -38,6 +51,7 @@ inventory :-
     );
     format('You don\'t have ~w in your inventory or you input the wrong command.\n', [InputThrow])
     ), !);
+
     Input == 3 -> !;
     write('Wrong input! Please input the right command\n'),
     inventory,
@@ -101,9 +115,25 @@ cntInventory([_|T], Count) :-
     cntInventory(T, NewCount),
     Count is (NewCount + 1),!.
 
+cntUsableInventory([], 0).
+
+cntUsableInventory([H|T], Count) :-
+    item(Category, H),
+    ((Category = ranching; Category = fishing; Category = farming ; Category = potion) -> 
+    cntUsableInventory(T, NewCount),
+    Count is NewCount +1;
+    cntUsableInventory(T, NewCount),
+    Count is NewCount, !
+    ), !.
+    
+
 sizeInventory(SizeInventory) :-
     currInventory(Inventory),
     cntInventory(Inventory,SizeInventory),!.
+
+sizeUseableInventory(SizeInventory) :-
+    currInventory(Inventory),
+    cntUsableInventory(Inventory,SizeInventory),!.
 
 % PRINT INVENTORY %
 printInventory([]) :- !.
@@ -117,6 +147,33 @@ printInventory([H|T]) :-
     format('~w ~ws\n',[Quantity, ItemName]),!
     ),
     printInventory(T), !.
+
+printUseableInventory([]) :- !.
+
+printUseableInventory([H|T]) :-
+    currInventory(Inventory),
+    item(Category, H),
+    (Category == 'ranching' -> 
+    cntItemInventory(H, Inventory, Quantity),
+    itemName(H, ItemName),
+    format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!;!
+    ),
+    (Category == 'fishing' -> 
+    cntItemInventory(H, Inventory, Quantity),
+    itemName(H, ItemName),
+    format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!;!
+    ),
+    (Category == 'farming' -> 
+    cntItemInventory(H, Inventory, Quantity),
+    itemName(H, ItemName),
+    format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!;!
+    ),
+    (Category == 'potion' -> 
+    cntItemInventory(H, Inventory, Quantity),
+    itemName(H, ItemName),
+    format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!;!
+    ),
+    printUseableInventory(T), !.
 
 printRemoveableInventory([]) :- !.
 
@@ -148,7 +205,7 @@ showUseableInventory :-
     write('Your inventory is empty\n'),!;
     write('Inventory\n'),
     sort(Inventory),
-    printInventory(Inventory),! 
+    printUseableInventory(Inventory),! 
     ).
 
 showRemoveableInventory :-
