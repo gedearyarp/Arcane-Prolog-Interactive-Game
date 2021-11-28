@@ -10,6 +10,8 @@
 :- include('marketplace.pl').
 :- include('move.pl').
 :- include('help.pl').
+:- include('inventory.pl').
+
 
 
 startGame(false).

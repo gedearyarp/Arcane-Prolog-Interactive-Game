@@ -6,14 +6,37 @@ maxInventory(100).
 currInventory([]).
 
 inventory :-
-    write('You have: \n'),
-    showInventory,
     write('What do you want to do?\n'),
     write('1. Use Item\n'),
     write('2. Throw Item\n'),
-    write('3. exit\n'),
+    write('3. Show Inventory\n'),
+    write('4. exit\n'),
     write('Enter command: '), read(Input), nl,
-    (Input == 1 ->)
+    (
+    Input == 1 -> 
+    showUseableInventory,
+    write('Which item do you want to use?\n'),
+    write('Enter command: '), read(InputUse), nl;
+
+    Input == 2->
+    showRemoveableInventory,
+    write('\nWhat do you want to throw?'),
+    read(InputThrow), nl,
+    currInventory(Inventory),
+    (member(InputThrow, Inventory) -> 
+    itemName(InputThrow, ItemThrowName),
+    cntItemInventory(CntThrow),
+    format('You have ~w ~w. How many do you want to throw?\n', [CntThrow, ItemThrowName]),
+    read(InputManyThrow), nl,
+    (InputManyThrow > CntThrow ->
+    format('You don’t have enough ~w. Cancelling…\n', [ItemThrowName]);
+    throwItem(InputThrow, InputManyThrow),
+    format('You threw away ~w ~w.\n', [InputManyThrow, ItemThrowName])
+    );
+    format('You don\'t have ~w in your inventory.\n', [InputThrow])
+    ), !.
+
+    );
 
 % ADD ITEM TO INVENTORY %
 addItem(Item) :-
@@ -64,7 +87,11 @@ printInventory([H|T]) :-
     item(Category, H),
     (Category == 'animal' -> !;
     cntItemInventory(H, Inventory, Quantity),
-    format('~w ~w\n',[Quantity, H])),
+    itemName(H, ItemName)
+    (
+    Quantity == 1 -> format('~w ~w\n',[Quantity, ItemName])), !;
+    format('~w ~ws\n',[Quantity, ItemName])),!
+    ),
     printInventory(T), !.
 
 % SHOW INVENTORY %
@@ -86,6 +113,15 @@ showUseableInventory :-
     maxInventory(MaxInventory),
     sizeInventory(SizeInventory),
     format('Your inventory (~w / ~w)\n',[SizeInventory, MaxInventory]),
+    sort(Inventory),
+    printInventory(Inventory),! 
+    ).
+
+showRemoveableInventory :-
+    currInventory(Inventory),
+    (Inventory = [],
+    write('Your inventory is empty\n'),!;
+    write('Your inventory\n'),
     sort(Inventory),
     printInventory(Inventory),! 
     ).
