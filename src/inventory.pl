@@ -217,6 +217,15 @@ showRemoveableInventory :-
     ).
 
 % USE ITEM FROM INVENTORY %
+useUseable(Item) :-
+    itemEnergy(Item, Power),
+    energy(Energy),
+    CurrentEnergy is Energy + Power,
+    (CurrentEnergy > 100 -> CurrentEnergy is 100; write('')),
+    retract(energy(Energy)),
+    asserta(energy(FinalEnergy)),
+    throwItem(Item).
+
 useItemInventory(Item) :- 
     currInventory(Inventory),
     itemName(Item, ItemName),

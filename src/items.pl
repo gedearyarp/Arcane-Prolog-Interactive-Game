@@ -184,25 +184,25 @@ itemGrade(3, 'Antique').
 itemGrade(4, 'Epic').
 itemGrade(5, 'Exotic').
 
-/* ENERGY */
-energy(corn, 5).
-energy(apple, 6).
-energy(watermelon, 7).
-energy(grape, 4).
-energy(tomato, 8).
-energy(potato, 7).
-energy(eggplant, 6).
+/* Item Energy */
+itemEnergy(corn, 5).
+itemEnergy(apple, 6).
+itemEnergy(watermelon, 7).
+itemEnergy(grape, 4).
+itemEnergy(tomato, 8).
+itemEnergy(potato, 7).
+itemEnergy(eggplant, 6).
 
-energy(chicken_meat, 20).
-energy(cow_meat, 50).
-energy(goat_meat, 30).
-energy(sheep_meat, 40).
-energy(cow_milk, 10).
-energy(goat_milk, 10).
+itemEnergy(chicken_meat, 20).
+itemEnergy(cow_meat, 50).
+itemEnergy(goat_meat, 30).
+itemEnergy(sheep_meat, 40).
+itemEnergy(cow_milk, 10).
+itemEnergy(goat_milk, 10).
 
-energy(carp, 18).
-energy(eel, 17).
-energy(salmon, 30).
-energy(sardine, 15).
-energy(shark, 35).
-energy(tuna, 25).
+itemEnergy(carp, 18).
+itemEnergy(eel, 17).
+itemEnergy(salmon, 30).
+itemEnergy(sardine, 15).
+itemEnergy(shark, 35).
+itemEnergy(tuna, 25).
