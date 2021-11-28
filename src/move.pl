@@ -13,7 +13,7 @@ encounterMarket(X, Y) :-
     mapObject(X, Y, 'M'),
     (\+inMarket(_) -> asserta(inMarket(true));
     retract(inMarket(_)), asserta(inMarket(true))),
-    write('You are in Marketplace.'), nl.
+    market, nl.
 
 encounterRanch(X, Y) :-
     mapObject(X, Y, 'R'),
@@ -21,11 +21,15 @@ encounterRanch(X, Y) :-
 
 encounterHouse(X, Y) :-
     mapObject(X, Y, 'H'),
-    write('You are in your house.'), nl.
+    (\+inHouse(_) -> asserta(inHouse(true));
+    retract(inHouse(_)), asserta(inHouse(true))),
+    house, nl.
 
 encounterQuest(X, Y) :- 
     mapObject(X, Y, 'Q'),
-    write('You encountered a quest.'), nl.
+    (\+inQuest(_) -> asserta(inQuest(true));
+    retract(inQuest(_)), asserta(inQuest(true))),
+    quest, nl.
 
 encounterWater(X, Y) :-
     mapObject(X, Y, 'o'),
