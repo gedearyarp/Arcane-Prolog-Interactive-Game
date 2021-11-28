@@ -10,7 +10,7 @@ inventory :-
     write('\nWhat do you want to do?\n'),
     write('1. Use Item\n'),
     write('2. Throw Item\n'),
-    write('3. exit\n'),
+    write('3. Exit\n'),
     write('Enter command: '), read(Input), nl,
     (
     Input == 1 -> 
@@ -18,7 +18,7 @@ inventory :-
     (SizeUseableInventory == 0 ->
     write('You don\'t have any usable item in your inventory.\n');
     showUseableInventory,
-    write('\nWhat do you want to use? (please input the COMMAND form) \n'), 
+    write('\nWhat do you want to use? (please input the COMMAND form) '), 
     read(InputUseable), nl,
     currInventory(Inventory),
     (member(InputUseable, Inventory) ->
@@ -125,7 +125,6 @@ cntUsableInventory([H|T], Count) :-
     cntUsableInventory(T, NewCount),
     Count is NewCount, !
     ), !.
-    
 
 sizeInventory(SizeInventory) :-
     currInventory(Inventory),
