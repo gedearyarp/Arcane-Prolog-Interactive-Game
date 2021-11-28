@@ -13,7 +13,8 @@ inventory :-
     write('2. Throw Item\n'),
     write('3. exit\n'),
     write('Enter command: '), read(Input), nl,
-    (Input == 1 ->)
+    % (Input == 1 ->)
+    !.
 
 % ADD ITEM TO INVENTORY %
 addItem(Item) :-

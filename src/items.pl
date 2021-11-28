@@ -121,6 +121,11 @@ itemName(cow_feed, 'Cow Food').
 itemName(goat_feed, 'Goat Food').
 itemName(sheep_feed, 'Sheep Food').
 
+itemName(chicken, 'Chicken').
+itemName(cow, 'Cow').
+itemName(sheep, 'Sheep').
+itemName(goat, 'Goat').
+
 itemName(chicken_meat, 'Chicken Meat').
 itemName(cow_meat, 'Cow Meat').
 itemName(goat_meat, 'Goat Meat').
