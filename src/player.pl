@@ -30,6 +30,8 @@ initPlayer :-   write('In order to play, please choose your role in this world(1
                 write('2. Farmer'), nl,
                 write('3. Rancher'), nl,
                 read(Input), nl, 
+                addItem(knife), addItem(shovel), addItem(fishing_rod),
+                asserta(equipment(knife, 1)), asserta(equipment(shovel, 1)), asserta(equipment(fishing_rod, 1)),
                 (Input =:= 1 -> asserta(job('Fisherman')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(76)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1)), asserta(totalGold(500));
                 Input =:= 2 -> asserta(job('Farmer')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(76)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1)), asserta(totalGold(500));
                 Input =:= 3 -> asserta(job('Rancher')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(76)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1)), asserta(totalGold(500));
