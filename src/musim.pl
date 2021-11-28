@@ -6,6 +6,10 @@ season(autumn, 1, 12).
 season(spring, 13, 26).
 season(fall, 27, 38).
 season(winter, 39, 50).
+seasonName(autumn, 'Autumn').
+seasonName(spring, 'Spring').
+seasonName(fall, 'Fall').
+seasonName(winter, 'winter').
 itemSeason(autumn, corn_seed).
 itemSeason(autumn, apple_seed).
 itemSeason(autumn, watermelon_seed).

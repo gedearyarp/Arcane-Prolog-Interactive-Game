@@ -52,6 +52,8 @@ status :-       job(A),
                 gold(K),
                 day(Day),
                 totalGold(Total),
+                currentSeason(Season),
+                seasonName(Season, SName),
                 writeStatusBanner,
                 write('Job              : '), write(A), nl,
                 write('Level            : '), write(B), nl,
@@ -65,6 +67,7 @@ status :-       job(A),
                 write('Gold             : '), write(K), nl,
                 write('Current Day      : '), write(Day), nl,
                 write('Total Gold       : '), write(Total), nl,
+                write('Current Season   : '), write(SName), nl,
                 !.
 
 writeStatusBanner :-
