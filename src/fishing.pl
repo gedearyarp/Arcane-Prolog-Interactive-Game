@@ -1,7 +1,3 @@
-/* To Do:
-    - fishing rod level effect on exp or drop rate */
-
-
 /* Fish List */
 isFish(carp).
 isFish(eel).
@@ -22,15 +18,20 @@ expFish(tuna, 10).
 
 /* Add Fishing Exp */
 /* Fishing exp calculation */
-expFishing(Fish, FishingExp) :-         
-    (job('Fisherman') ->
+expFishing(Fish, FishingExp) :-     
     expFish(Fish, ExpFish),
+    equipment(fishing_rod, LevelEquipment),
+    (LevelEquipment =:= 1 -> ExpRate is 0;
+    LevelEquipment =:= 2 -> ExpRate is 0.3;
+    LevelEquipment =:= 3 -> ExpRate is 0.75),
+    ExpEquipment is round(ExpRate * ExpFish),
+
+    (job('Fisherman') ->
     ExpSpeciality is round(0.2 * ExpFish),
-    FishingExp is ExpFish + ExpSpeciality;
+    FishingExp is ExpFish + ExpSpeciality + ExpEquipment;
 
     \+job('Fisherman') ->
-    expFish(Fish, ExpFish),
-    FishingExp is ExpFish).
+    FishingExp is ExpFish + ExpEquipment).
 /* Adding fishing exp to player state */
 addExpFishing(FishingExp) :-    
     fishingExp(PrevExp),

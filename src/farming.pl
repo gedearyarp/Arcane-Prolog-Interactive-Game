@@ -2,10 +2,6 @@
 :- dynamic(cooldownHarvest/4).
 :- dynamic(canPlant/3).
 
-/* To Do:
-    - pas bobo, cek mapObject yang ada crop symbolnya, terus harvestCooldown(_, _, Crop) */
-
-
 /* Crop List */
 isCrop(corn).
 isCrop(apple).
@@ -59,14 +55,19 @@ cooldownCrop(eggplant, 2).
 /* Add Farming Exp */
 /* Farming exp calculation */
 expFarming(Crop, FarmingExp) :-
+    expCrop(Crop, ExpCrop)
+    equipment(shovel, LevelEquipment),
+    (LevelEquipment =:= 1 -> ExpRate is 0;
+    LevelEquipment =:= 2 -> ExpRate is 0.3;
+    LevelEquipment =:= 3 -> ExpRate is 0.75),
+    ExpEquipment is round(ExpRate * ExpCrop),
+
     (job('Farmer') ->
-    expCrop(Crop, ExpCrop),
     ExpSpeciality is round(0.2 * ExpCrop),
-    FarmingExp is ExpCrop + ExpSpeciality;
+    FarmingExp is ExpCrop + ExpSpeciality + ExpEquipment;
 
     \+job('Farmer') ->
-    expCrop(Animal, ExpCrop),
-    FarmingExp is ExpCrop).
+    FarmingExp is ExpCrop + ExpEquipment).
 /* Adding farming exp to player state */
 addExpFarming(FarmingExp) :-    
     farmingExp(PrevExp),
