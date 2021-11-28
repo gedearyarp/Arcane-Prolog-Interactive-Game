@@ -11,6 +11,7 @@
 :- include('move.pl').
 :- include('help.pl').
 :- include('inventory.pl').
+:- include('items.pl').
 
 
 

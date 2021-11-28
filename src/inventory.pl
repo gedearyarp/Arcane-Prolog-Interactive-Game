@@ -78,7 +78,7 @@ cntItemInventory(H, [_|T], N) :-
     N is NewN, !.
 
 % COUNT SPECIFIC CATEGORY IN INVENTORY %
-cntCategoryInventory(Ctg, [], 0).
+cntCategoryInventory(_, [], 0).
 
 cntCategoryInventory(Ctg, [H|T],N) :- 
     item(Category, H),
@@ -119,6 +119,7 @@ printInventory([H|T]) :-
     printInventory(T), !.
 
 printRemoveableInventory([]) :- !.
+
 printRemoveableInventory([H|T]) :-
     currInventory(Inventory),
     item(Category, H),
