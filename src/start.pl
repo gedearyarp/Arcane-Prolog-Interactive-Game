@@ -65,4 +65,5 @@ start :-
 resetGame :-
     retract(startGame(_)),
     asserta(startGame(false)),
+    write('RESETTTTTTTTTTTTTTTTTTTTTTTTTTTT'), nl, nl, nl, nl,
     start.
