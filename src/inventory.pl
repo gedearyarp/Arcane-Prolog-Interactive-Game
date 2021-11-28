@@ -69,9 +69,30 @@ addItem(Item, Amount) :-
 % COUNT SPECIFIC ITEM IN INVENTORY %
 cntItemInventory(_,[],0).
 
-cntItemInventory(H,[H|T],N) :- cntItemInventory(H,T,N1), N is 1 + N1, !.
+cntItemInventory(H, [H|T], N) :- 
+    cntItemInventory(H, T, NewN), 
+    N is 1 + NewN, !.
 
-cntItemInventory(H,[_|T],N) :- cntItemInventory(H,T,N1), N is N1, !.
+cntItemInventory(H, [_|T], N) :- 
+    cntItemInventory(H, T, NewN), 
+    N is NewN, !.
+
+% COUNT SPECIFIC CATEGORY IN INVENTORY %
+cntCategoryInventory(Ctg, [], 0).
+
+cntCategoryInventory(Ctg, [H|T],N) :- 
+    item(Category, H),
+    (Category == Ctg -> 
+    cntCategoryInventory(Ctg, T, NewN),
+    N is NewN + 1, !;
+    cntCategoryInventory(Ctg, T, NewN),
+    N is NewN, !
+    ).
+
+% testctg :-
+%     currInventory(Inventory),
+%     cntCategoryInventory(animal, Inventory, Quantity),
+%     format('kategori hewan ~w',[Quantity]).
 
 % COUNT SIZE OF INVENTORY %
 cntInventory([], 0).
