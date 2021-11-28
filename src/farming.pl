@@ -58,7 +58,7 @@ cooldownCrop(potato, 5).
 cooldownCrop(eggplant, 2).
 
 
-/* TRIAL
+/* TRIAL  
 inventory(corn_seed, 4). */
 
 
@@ -155,20 +155,27 @@ harvestCooldown(X, Y, Crop) :-
     asserta(cooldownHarvest(X, Y, Crop, CurrentCooldown))).
 
 
+/* Reset Tile */
+resetTile(X, Y) :-
+    (harvestCrop(X, Y, Crop, _) ->
+    cropSymbol(Crop, Symbol),
+
+    (cooldownHarvest(X, Y, Crop, _) -> retract(cooldownHarvest(X, Y, Crop, _));
+    write('')),
+
+    retract(harvestCrop(X, Y, Crop, _)),
+    retract(mapObject(X, Y, Symbol));
+    
+    write('')). 
+
+
 /* Farming */
 dig :-
     mapObject(X, Y, 'P'),
     emptyTile(X, Y),
 
     (canDig(true) ->
-    
-    (harvestCrop(X, Y, Crop, _) -> % Digging in planted tile resulting in all farming states on the tile removed
-    cropSymbol(Crop, Symbol),
-    (cooldownHarvest(X, Y, Crop, _) -> retract(cooldownHarvest(X, Y, Crop, _)); write('')),
-    retract(harvestCrop(X, Y, Crop, _)),
-    retract(mapObject(X, Y, Symbol));
-    write('')),
-
+    resetTile(X, Y),
     (\+mapObject(X, Y, '=') -> assertz(mapObject(X, Y, '=')); write('')),  % Tile hasn't been dug before
     (\+canPlant(X, Y, _) -> asserta(canPlant(X, Y, true));
     retract(canPlant(X, Y, _)), asserta(canPlant(X, Y, true))),    
