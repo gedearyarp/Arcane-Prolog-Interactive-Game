@@ -179,10 +179,8 @@ itemName(potion_super_level, '5UP3R 66 64M1N6 Potion').
 
 /* ITEMS GRADE */
 itemGrade(1, 'Normal').
-itemGrade(2, 'Improved').
-itemGrade(3, 'Antique').
-itemGrade(4, 'Epic').
-itemGrade(5, 'Exotic').
+itemGrade(2, 'Antique').
+itemGrade(3, 'Exotic').
 
 /* Item Energy */
 itemEnergy(corn, 5).

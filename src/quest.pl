@@ -33,6 +33,7 @@ initQuest :-
     asserta(dairyQuest(Dairy)),
     write('Anda mendapat quest baru. Kumpulkan '), write(Crop), write(' buah crop, '),
     write(Fish), write(' ekor ikan, dan '), write(Dairy), write(' buah dairy. Goodluck!'), nl,
+    retract(mapObject(_,_,'Q')),
     !.
 
 checkQuest :-
@@ -62,8 +63,16 @@ checkQuest :-
     write('Selamat, anda telah menyelesaikan Quest!'), nl,
     write('Gold yang didapat: '), write(G), nl,
     write('Experience yang didapat: '), write(X),nl,
+    newQuest,
     !.
 
+newQuest :-
+    mapSize(LimX, LimY),
+    random(1, LimX, X),
+    random(1, LimY, Y),
+    (mapObject(X,Y,_) -> newQuest;
+    \+mapObject(X,Y,_) -> asserta(mapObject(X,Y,'Q'))),
+    !.
 
 quest :-
     \+inQuest(_),

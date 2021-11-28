@@ -144,4 +144,71 @@ jualItem(Input, Amount) :-
     !.
 
 
-% upgradeEq :-
+upgradeEq :-
+    equipment(shovel, ShovelLevel),
+    equipment(fishing_rod, RodLevel),
+    equipment(knife, KnifeLevel),
+    itemGrade(ShovelLevel, SGrade),
+    itemGrade(RodLevel, RGrade),
+    itemGrade(KnifeLevel, KGrade),
+    write('Level equipment sekarang: '), nl,
+    format('1. ~w Shovel (Level ~w)', [SGrade, ShovelLevel]), nl,
+    format('2. ~w Fishing Rod (Level ~w)', [RGrade, RodLevel]), nl,
+    format('3. ~w Knife (Level ~w)', [KGrade, KnifeLevel]), nl,
+    write('Ingin upgrade yang mana? (command angka): '), read(Choice), nl,
+    (Choice =:= 1 -> upgradeItem(shovel, ShovelLevel);
+    Choice =:= 2 -> upgradeItem(fishing_rod, RodLevel);
+    Choice =:= 3 -> upgradeItem(knife, KnifeLevel);
+    write('Invalid input.'), nl, nl, market),
+    !.
+
+upgradeItem(Type,1) :-
+    priceEquipment(Type,2,Price),
+    gold(G),
+    G < Price,
+    write('Duit kamu kurang :( Sana kerja lagi!'), nl,
+    market,
+    !.
+
+upgradeItem(Type, 1) :-
+    priceEquipment(Type,2,Price),
+    gold(G),
+    G >= Price,
+    GNew is G - Price,
+    retract(gold(G)),
+    asserta(gold(GNew)),
+    retract(equipment(Type,_)),
+    asserta(equipment(Type,2)),
+    itemName(Type, Name),
+    write('Berhasil mengupgrade '), write(Name), write('!'), nl,
+    write('Mau beli apa lagi?'), nl, nl,
+    market,
+    !.
+
+upgradeItem(Type,2) :-
+    priceEquipment(Type,3,Price),
+    gold(G),
+    G < Price,
+    write('Duit kamu kurang :( Sana kerja lagi!'), nl,
+    market,
+    !.
+
+upgradeItem(Type, 2) :-
+    priceEquipment(Type,3,Price),
+    gold(G),
+    G >= Price,
+    GNew is G - Price,
+    retract(gold(G)),
+    asserta(gold(GNew)),
+    retract(equipment(Type,_)),
+    asserta(equipment(Type,3)),
+    itemName(Type, Name),
+    write('Berhasil mengupgrade '), write(Name), write('!'), nl,
+    write('Mau beli apa lagi?'), nl, nl,
+    market,
+    !.
+
+upgradeItem(_,3) :-
+    write('Level equipment sudah maksimal.'), nl,
+    market,
+    !.

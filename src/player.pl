@@ -188,3 +188,8 @@ checkLevelUp :-
 
     (Exp >= BaseExp -> levelUp(Exp, BaseExp);
     Exp < BaseExp).
+
+cheatGold :-
+    retract(gold(_)),
+    asserta(gold(999999)),
+    !.
