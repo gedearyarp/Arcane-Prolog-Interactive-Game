@@ -141,6 +141,10 @@ printInventory([H|T]) :-
     currInventory(Inventory),
     item(Category, H),
     (Category == 'animal' -> !;
+    Category == 'equipment' -> itemName(H,ItemName),
+    equipment(H, Level), itemGrade(Level, Rarity),
+    format('~w ~w\n', [Rarity, ItemName]);
+    
     cntItemInventory(H, Inventory, Quantity),
     itemName(H, ItemName),
     format('~w ~ws\n',[Quantity, ItemName]),!
