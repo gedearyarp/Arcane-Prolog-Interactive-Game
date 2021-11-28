@@ -190,6 +190,7 @@ dig :-
     write('You can\'t dig there...'), nl).
 plant :-
     mapObject(X, Y, 'P'),
+    currInventory(Inventory),    
     
     (canPlant(X, Y, true) ->
     currInventory(Inventory),

@@ -53,6 +53,7 @@ expAnimalProduction(goat, 20).
 
 /* Animal Initialization */
 initAnimal(Animal) :-
+    currInventory(Inventory),
     (\+member(Animal, Inventory) ->
     ranchingLevel(Level),
     cooldownAnimal(Level, Animal, Cooldown),
@@ -141,6 +142,7 @@ feedCooldown(Animal) :-
 
     asserta(cooldownCollect(Animal, CurrentCooldown))).
 feed(Animal) :-
+    currInventory(Inventory),
     (\+member(Animal, Inventory) ->
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
@@ -166,6 +168,7 @@ feed(Animal) :-
 
 /* Ranching Process while Sleeping */
 updateRanch :-
+    currInventory(Inventory),
     ((\+member(chicken, Inventory) -> write('');
     feedCooldown(chicken),
     (\+fedAnimal(chicken, _) -> asserta(fedAnimal(chicken, false));
@@ -215,6 +218,7 @@ collect(Animal) :-
 
 /* Slaughter Animal */
 resetAnimalState(Animal) :-
+    currInventory(Inventory),
     (member(Animal, Inventory) ->
     write('');
     
@@ -223,6 +227,7 @@ resetAnimalState(Animal) :-
     (\+collectAnimal(Animal, _) -> write(''); retract(collectAnimal(Animal, _))),
     (\+cooldownCollect(Animal, _) -> write(''); retract(cooldownCollect(Animal, _)))).
 slaughter(Animal) :-
+    currInventory(Inventory),
     (\+member(Animal, Inventory) ->
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
