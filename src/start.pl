@@ -55,9 +55,14 @@ start :-
     checkLevelUp,
     nl, write('> '),
     (checkEndGame, !;
-    X == 'exit' -> !, write('Thank you for wasting such a precious time to play this game :)'), nl;
-    (catch(read(X), _, true), true),
-    (catch(call(X), _, write('Wrong command, use \'help.\' to check all the valid command in ARCANE.')), fail)).
+    % X == 'exit' -> !, write('Thank you for wasting such a precious time to play this game :)'), nl;
+    (catch(read(X), _, true), true), (X == 'exit' -> !, write('Thank you for wasting such a precious time to play this game :)'), nl; 
+    true(_), (catch(call(X), _, write('Wrong command, use \'help.\' to check all the valid command in ARCANE.')), fail))).
 
 start :-
     write('The game has already started. Use \'help.\' to look at available commands!').
+
+resetGame :-
+    retract(startGame(_)),
+    asserta(startGame(false)),
+    start.
