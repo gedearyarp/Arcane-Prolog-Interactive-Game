@@ -71,9 +71,9 @@ initAnimal(Animal) :-
 expRanching(Animal, Count, RanchingExp) :-
     expAnimalProduction(Animal, ExpAnimal),
     equipment(knife, LevelEquipment),
-    (LevelEquipment =:= 1 -> ExpRate is 0.1;
-    LevelEquipment =:= 2 -> ExpRate is 0.3;
-    LevelEquipment =:= 3 -> ExpRate is 0.75),
+    (LevelEquipment =:= 1 -> ExpRate is 0.133;
+    LevelEquipment =:= 2 -> ExpRate is 0.333;
+    LevelEquipment =:= 3 -> ExpRate is 0.733),
     ExpEquipment is round(ExpRate * ExpAnimal * Count),
 
     (job('Rancher') ->
@@ -83,7 +83,7 @@ expRanching(Animal, Count, RanchingExp) :-
 
     \+job('Rancher') ->
     TotalExpAnimal is ExpAnimal * Count,
-    RanchingExp is TotalExpAnimal + ExpEquipment).
+    RanchingExp is TotalExpAnimal + ExpEquipment), !.
 /* Adding ranching exp to player state */
 addExpRanching(RanchingExp) :-    
     ranchingExp(PrevExp),

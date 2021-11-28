@@ -21,17 +21,17 @@ expFish(tuna, 10).
 expFishing(Fish, FishingExp) :-     
     expFish(Fish, ExpFish),
     equipment(fishing_rod, LevelEquipment),
-    (LevelEquipment =:= 1 -> ExpRate is 0.1;
-    LevelEquipment =:= 2 -> ExpRate is 0.3;
-    LevelEquipment =:= 3 -> ExpRate is 0.75),
+    (LevelEquipment =:= 1 -> ExpRate is 0.133;
+    LevelEquipment =:= 2 -> ExpRate is 0.333;
+    LevelEquipment =:= 3 -> ExpRate is 0.733),
     ExpEquipment is round(ExpRate * ExpFish),
 
     (job('Fisherman') ->
-    ExpSpeciality is round(0.2 * ExpFish),
+    ExpSpeciality is round(0.233 * ExpFish),
     FishingExp is ExpFish + ExpSpeciality + ExpEquipment;
 
     \+job('Fisherman') ->
-    FishingExp is ExpFish + ExpEquipment).
+    FishingExp is ExpFish + ExpEquipment), !.
 /* Adding fishing exp to player state */
 addExpFishing(FishingExp) :-    
     fishingExp(PrevExp),

@@ -57,17 +57,17 @@ cooldownCrop(eggplant, 2).
 expFarming(Crop, FarmingExp) :-
     expCrop(Crop, ExpCrop),
     equipment(shovel, LevelEquipment),
-    (LevelEquipment =:= 1 -> ExpRate is 0.1;
-    LevelEquipment =:= 2 -> ExpRate is 0.3;
-    LevelEquipment =:= 3 -> ExpRate is 0.75),
+    (LevelEquipment =:= 1 -> ExpRate is 0.133;
+    LevelEquipment =:= 2 -> ExpRate is 0.333;
+    LevelEquipment =:= 3 -> ExpRate is 0.733),
     ExpEquipment is round(ExpRate * ExpCrop),
 
     (job('Farmer') ->
-    ExpSpeciality is round(0.2 * ExpCrop),
+    ExpSpeciality is round(0.233 * ExpCrop),
     FarmingExp is ExpCrop + ExpSpeciality + ExpEquipment;
 
     \+job('Farmer') ->
-    FarmingExp is ExpCrop + ExpEquipment).
+    FarmingExp is ExpCrop + ExpEquipment), !.
 /* Adding farming exp to player state */
 addExpFarming(FarmingExp) :-    
     farmingExp(PrevExp),
