@@ -33,7 +33,8 @@ Contributors:
 - ... and many more
 
 ## Structure
-`│   README.md
+```bash
+│   README.md
 │   Tugas Besar Logika Komputasional 2021 – IF2121.pdf
 │
 ├───docs
@@ -54,7 +55,8 @@ Contributors:
         player.pl
         quest.pl
         ranching.pl
-        start.pl`
+        start.pl
+ ```
  
  ## How to run?
  - Consult the `start.pl` file in GNU Prolog.
