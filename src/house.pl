@@ -64,6 +64,7 @@ sleepInProgress :-
     retract(mapObject(13, 16, 'A')),
     retract(alchemist(true))),
     updateRanch,
+    updateFarm,
     house.
 
 writeDiary :-

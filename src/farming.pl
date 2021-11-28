@@ -162,6 +162,16 @@ resetTile(X, Y) :-
     write('')). 
 
 
+/* Farming Process while Sleeping */
+resetDig :-
+    (\+mapObject(_, _, '=') -> write('');
+    retractall(mapObject(_, _, '='))).
+updateFarm :-
+    resetDig,
+    ((\+cooldownHarvest(_, _, _, _)) -> write('');
+    harvestCooldown(_, _, _)).
+
+
 /* Farming */
 dig :-
     mapObject(X, Y, 'P'),
