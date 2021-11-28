@@ -27,7 +27,7 @@ map :- startGame(true), !, drawMap.
 drawPoint(X, Y) :- mapSize(W, H),
                     X =:= W + 1,
                     Y =< H + 1,
-                    write('# '), nl,
+                    write('#'), nl,
                     Y1 is Y+1,
                     drawPoint(0, Y1).
 
@@ -35,7 +35,9 @@ drawPoint(X, Y) :- mapSize(W, H),
 drawPoint(X, Y) :- mapSize(_, H),
                     X =:= 0,
                     Y =< H + 1,
-                    write('# '),
+                    (Y =:= H+1, !, write('##');
+                    Y =:= 0, !, write('##');
+                    write('# ')),
                     X1 is X + 1,
                     drawPoint(X1, Y).
 
@@ -44,7 +46,7 @@ drawPoint(X, Y) :- mapSize(W, _),
                     X < W + 1,
                     X > 0,
                     Y =:= 0,
-                    write('# '),
+                    write('##'),
                     X1 is X + 1, 
                     drawPoint(X1, Y).
 
@@ -53,7 +55,7 @@ drawPoint(X, Y) :- mapSize(W, H),
                     X < W + 1,
                     X > 0,
                     Y =:= H + 1,
-                    write('# '),
+                    write('##'),
                     X1 is X + 1,
                     drawPoint(X1, Y).
 					
