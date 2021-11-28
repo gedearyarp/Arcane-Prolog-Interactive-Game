@@ -179,8 +179,9 @@ ranch :-
     inRanch(X, Y),
     (canRanch(true) ->
     write('Welcome to the Ranch!'), nl, 
-    
-    (\+member(chicken, Inventory), \+member(sheep, Inventory), \+member(cow, Inventory), \+member(goat, Inventory) ->
+    currInventory(Inventory),
+    cntCategoryInventory(animal, Inventory, AnimalQty),
+    (AnimalQty == 0 ->
     write('You have no animals. Go buy some in the marketplace!'), nl;
     
     write('You have:'), nl,
