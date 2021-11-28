@@ -30,9 +30,9 @@ initPlayer :-   write('In order to play, please choose your role in this world(1
                 write('2. Farmer'), nl,
                 write('3. Rancher'), nl,
                 read(Input), nl, 
-                (Input =:= 1 -> asserta(job('Fisherman')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(76)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1));
-                Input =:= 2 -> asserta(job('Farmer')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(76)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1));
-                Input =:= 3 -> asserta(job('Rancher')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(76)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1));
+                (Input =:= 1 -> asserta(job('Fisherman')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(76)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1)), asserta(totalGold(500));
+                Input =:= 2 -> asserta(job('Farmer')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(76)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(56)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1)), asserta(totalGold(500));
+                Input =:= 3 -> asserta(job('Rancher')), asserta(level(1)), asserta(farmingLevel(1)), asserta(farmingExp(56)), asserta(fishingLevel(1)), asserta(fishingExp(56)), asserta(ranchingLevel(1)), asserta(ranchingExp(76)), asserta(exp(0)), asserta(baseExp(300)), asserta(gold(500)), asserta(day(1)), asserta(totalGold(500));
                 write('Wrong input! Please input the right command'), nl, initPlayer).
 
 initPlayer :-   write('The player has already created, you can\'t initialize again.').
@@ -76,13 +76,113 @@ writeStatusBanner :-
     write(':......::::::..:::::..:::::..:::::..::::::.......::::......:::'), nl, nl,
     !.
 
-checkEndGame :-
-    \+totalGold(20000).
+writeLevelUpBanner :-
+
+write('\'##:::::::\'########:\'##::::\'##:\'########:\'##::::::::::\'##:::\'##:\'########::\'####:\'####:\'####:'), nl,
+write(' ##::::::: ##.....:: ##:::: ##: ##.....:: ##:::::::::: ##:::: ##: ##.... ##: ####: ####: ####:'), nl,
+write(' ##::::::: ##::::::: ##:::: ##: ##::::::: ##:::::::::: ##:::: ##: ##:::: ##: ####: ####: ####:'), nl,
+write(' ##::::::: ######::: ##:::: ##: ######::: ##:::::::::: ##:::: ##: ########::: ##::: ##::: ##::'), nl,
+write(' ##::::::: ##...::::. ##:: ##:: ##...:::: ##:::::::::: ##:::: ##: ##.....::::..::::..::::..:::'), nl,
+write(' ##::::::: ##::::::::. ## ##::: ##::::::: ##:::::::::: ##:::: ##: ##::::::::\'####:\'####:\'####:'), nl,
+write(' ########: ########:::. ###:::: ########: ########::::. #######:: ##:::::::: ####: ####: ####:'), nl,
+write('........::........:::::...:::::........::........::::::.......:::..:::::::::....::....::....::'), nl, nl.
+
 
 checkEndGame :-
-    totalGold(20000),
+    totalGold(TotalGold),
+    (TotalGold >= 20000 ->
     write('Congratulations! Akhirnya kelar juga nih game.'),nl,
     write('Ini adalah stats terakhir kamu: '),
     status,
-    write('Bye-bye! Selamat menderita kembali ^_^'),
-    !.
+    write('Bye-bye! Selamat menderita kembali ^_^')).
+
+levelUp(Exp, BaseExp) :-
+
+    gold(CurrGold),
+    totalGold(TotalGold),
+
+    % Level 1
+    (BaseExp == 300 ->
+    Exp >= BaseExp, 
+    retract(level(_)),
+    asserta(level(2)),
+    NewExp is Exp-BaseExp,
+    retract(exp(_)),
+    asserta(exp(NewExp)),
+    retract(baseExp(_)),
+    asserta(baseExp(500)),
+    NewCurrGold is CurrGold + 300,
+    retract(gold(_)),
+    asserta(gold(NewCurrGold)),
+    NewTotalGold is TotalGold + 300,
+    retract(totalGold(_)),
+    asserta(totalGold(NewTotalGold)),
+    writeLevelUpBanner,
+    write('Congratulations you got 300 Gold as and advantage of leveling up :D'), nl;
+
+    % Level 2
+    BaseExp == 500 ->
+    Exp >= BaseExp, 
+    retract(level(_)),
+    asserta(level(3)),
+    NewExp is Exp-BaseExp,
+    retract(exp(_)),
+    asserta(exp(NewExp)),
+    retract(baseExp(_)),
+    asserta(baseExp(1000)),
+    NewCurrGold is CurrGold + 500,
+    retract(gold(_)),
+    asserta(gold(NewCurrGold)),
+    NewTotalGold is TotalGold + 500,
+    retract(totalGold(_)),
+    asserta(totalGold(NewTotalGold)),
+    writeLevelUpBanner,
+    write('Congratulations you got 500 Gold as and advantage of leveling up :D'), nl;
+
+    % Level 3
+    BaseExp == 1000 ->
+    Exp >= BaseExp, 
+    retract(level(_)),
+    asserta(level(4)),
+    NewExp is Exp-BaseExp,
+    retract(exp(_)),
+    asserta(exp(NewExp)),
+    retract(baseExp(_)),
+    asserta(baseExp(2000)),
+    NewCurrGold is CurrGold + 1000,
+    retract(gold(_)),
+    asserta(gold(NewCurrGold)),
+    NewTotalGold is TotalGold + 1000,
+    retract(totalGold(_)),
+    asserta(totalGold(NewTotalGold)),
+    writeLevelUpBanner,
+    write('Congratulations you got 1000 Gold as and advantage of leveling up :D'), nl;
+
+    % Level 4
+    BaseExp == 2000 ->
+    Exp >= BaseExp, 
+    retract(level(_)),
+    asserta(level(5)),
+    NewExp is Exp-BaseExp,
+    retract(exp(_)),
+    asserta(exp(NewExp)),
+    retract(baseExp(_)),
+    asserta(baseExp(99999999)),
+    NewCurrGold is CurrGold + 2000,
+    retract(gold(_)),
+    asserta(gold(CurrGold+2000)),
+    NewTotalGold is TotalGold + 2000,
+    retract(totalGold(_)),
+    asserta(totalGold(NewTotalGold)),
+    writeLevelUpBanner,
+    write('Congratulations you got 2000 Gold as and advantage of leveling up :D'), nl,
+    write('MENTOK NIIII BOS'), nl;
+
+    BaseExp > 2000).
+
+checkLevelUp :-
+    exp(Exp),
+    baseExp(BaseExp),
+
+    (Exp >= BaseExp -> levelUp(Exp, BaseExp);
+    Exp < BaseExp).
