@@ -112,6 +112,7 @@ addExpFarming(FarmingExp) :-
 
 /* Planting Seeds */
 plantSeed(Seed) :-
+    currInventory(Inventory),
     (\+member(Seed, Inventory) ->
     write('You don\'t have that seed!'), nl;
     
