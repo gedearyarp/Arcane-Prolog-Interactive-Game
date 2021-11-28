@@ -4,6 +4,7 @@
 % :- dynamic(gold/1).
 % :- include('inventory.pl').
 % :- include('items.pl').
+% :- include('musim.pl').
 % :- dynamic(inMarket/1).
 % :- dynamic(totalGold/1).
 % inMarket(t).
@@ -55,7 +56,8 @@ printMarket([A|B]) :-
 
 buySeed :-
     write('Seed market. The finest there is.'), nl,
-    findall(Nama, item(seed, Nama), ListNama),
+    currentSeason(Season),
+    findall(Nama, itemSeason(Season, Nama), ListNama),
     printMarket(ListNama), nl,
     write('Pilihanmu (kode): '),
     read(Input), nl,

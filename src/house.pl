@@ -78,7 +78,8 @@ sleepInProgress :-
     true(_)),
     updateRanch,
     updateFarm,
-    (Temp =:= 7 -> peri;
+    checkSeason,
+    (Temp =:= 7 -> peri, fail;
     true(_)),
     house.
 
@@ -125,4 +126,5 @@ peri :-
     asserta(mapObject(XNew,YNew,'P')),
     write('Berhasil berpindah. Yay!'), nl,
     write('Sekarang, bangunlah....'), nl, nl,
+    exitHouse,
     !.
