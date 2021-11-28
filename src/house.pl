@@ -2,10 +2,17 @@
 :- dynamic(day/1).
 :- dynamic(alchemist/1).
 
-:- dynamic(inHouse/1).
+% :- dynamic(inHouse/1).
+% :- include('map.pl').
+% :- include('move.pl').
+% :- include('farming.pl').
+% :- include('fishing.pl').
+% :- include('ranching.pl').
+
+true(1).
 % day(9).
 % startGame(true).
-
+% inHouse(a).
 house :-
     inHouse(_),
     \+(day(50)),
@@ -46,10 +53,14 @@ sleep :-
     !.
 
 sleepInProgress :-
-    random(1,3,Temp),
+    random(1,8,Temp),
     (Temp =:= 1 -> write('Ahh.. sleep... I never get this when im still in ITB..');
-    Temp =:= 2 -> write('Hu Tao ...??? WANGY WANGY... PLEASE DONT GO....');
-    Temp =:= 3 -> write('What a boring sleep.. No dreams whatsoever')), nl,
+    Temp =:= 2 -> write('Hu Tao ...??? WANGY WANGY... PLEASE DONT GO.... Eh... mimpi');
+    Temp =:= 3 -> write('What a boring sleep.. No dreams whatsoever');
+    Temp =:= 4 -> write('APA??? SEMUA.... HEWANKU... MATI???.. oh cuma mimpi');
+    Temp =:= 5 -> write('Wuih akhirnya radiant juga gue,, eh mimpi.');
+    Temp =:= 6 -> write('AKHIRNYA JADIAN SAMA GANYU >.<... eh mimpi.');
+    Temp =:= 7 -> write('Hi! My name is Bujubiji and I am a fairy.')), nl,
     day(X),
     CurrDay is X + 1,
     retract(day(X)),
@@ -58,13 +69,17 @@ sleepInProgress :-
     nl, write('Seems like there\'s someone new coming to our village...'), nl, write('Hmm... I wonder who is that person?'), nl,
     resetTile(13, 16),
     assertz(mapObject(13, 16, 'A')),
-    asserta(alchemist(true))),
+    asserta(alchemist(true));
+    true(_)),
     (CurrDay =:= 13 ->
     nl, write('That odd person is leaving today. Will he come back again?'), nl,
     retract(mapObject(13, 16, 'A')),
-    retract(alchemist(true))),
+    retract(alchemist(true));
+    true(_)),
     updateRanch,
     updateFarm,
+    (Temp =:= 7 -> peri;
+    true(_)),
     house.
 
 writeDiary :-
@@ -89,4 +104,25 @@ readDiary :-
 
 exitHouse :-
     write('Buh-bye!'),nl,
+    !.
+
+peri :- 
+    mapObject(XNow, YNow, 'P'),
+    nl,
+    write('Aku bisa membawamu kemana saja!'), nl,
+    format('Lokasi sekarang: ~w, ~w',[XNow, YNow]), nl,
+    write('Masukkan koordinat lokasi yang kamu mau: '), nl,
+    write('X: '), read(XNew), nl,
+    write('Y: '), read(YNew), nl,
+    mapSize(XLimit, YLimit),
+    (XNew < 1 -> write('Invalid coordinates, ulang lagi.'), nl, peri;
+    YNew < 1 -> write('Invalid coordinates, ulang lagi.'), nl, peri;
+    XNew > XLimit -> write('Invalid coordinates, ulang lagi.'), nl, peri;
+    YNew > YLimit -> write('Invalid coordinates, ulang lagi.'), nl, peri;
+    true(_)),
+    nl,
+    retract(mapObject(_,_,'P')),
+    asserta(mapObject(XNew,YNew,'P')),
+    write('Berhasil berpindah. Yay!'), nl,
+    write('Sekarang, bangunlah....'), nl, nl,
     !.
