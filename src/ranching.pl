@@ -62,7 +62,7 @@ initAnimal(Animal) :-
     
     member(Animal, Inventory) ->
     retract(fedAnimal(Animal, _)),
-    asserta(fedAnimal(Animal, true)))
+    asserta(fedAnimal(Animal, true))).
 
 
 /* Add Ranching Exp */
