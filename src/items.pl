@@ -33,6 +33,11 @@ item(ranching, wool).
 item(ranching, cow_milk).
 item(ranching, goat_milk).
 
+/* ANIMAL ITEM */
+item(animal, chicken).
+item(animal, cow).
+item(animal, sheep).
+item(animal, goat).
 
 /* FISHING ITEMS */
 item(fishing, carp).
@@ -64,10 +69,15 @@ priceItem(tomato, 75).
 priceItem(potato, 100).
 priceItem(eggplant, 50).
 
-priceItem(chicken_feed, 40).
-priceItem(cow_feed, 75).
-priceItem(goat_feed, 50).
-priceItem(sheep_feed, 60).
+priceItem(chicken_feed, 10).
+priceItem(cow_feed, 30).
+priceItem(goat_feed, 20).
+priceItem(sheep_feed, 25).
+
+priceItem(cow, 2000).
+priceItem(chicken, 1000).
+priceItem(sheep, 1500).
+priceItem(goat, 1200).
 
 priceItem(chicken_meat, 200).
 priceItem(cow_meat, 350).

@@ -37,7 +37,7 @@ beli :-
     write('Masukkan pilihan: '), read(X),
     (X =:= 1 -> buySeed;
     X =:= 2 -> buyAnimal;
-    X =:= 3 -> buyAnimalFood),nl,,nl
+    X =:= 3 -> buyAnimalFood),nl,nl,
     !.
 
 printMarket([]).
