@@ -79,6 +79,4 @@ resetGame :-
     retract(day(_)),
     retract(energy(_)),
     retract(mapObject(_,_,'P')),
-    asserta(mapObject(8,7,'P')),
-    write('RESETTTTTTTTTTTTTTTTTTTTTTTTTTTT'), nl, nl, nl, nl,
-    start.
+    asserta(mapObject(8,7,'P')).
