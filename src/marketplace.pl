@@ -69,7 +69,9 @@ buySeed :-
     printMarket(ListNama), nl,
     write('Pilihanmu (kode): '),
     read(Input), nl,
-    (item(seed,Input) -> buyItem(Input);
+    write('Mau beli berapa banyak: '),
+    read(Amount), nl,
+    (item(seed,Input) -> buyItem(Input, Amount);
     \+item(seed,Input) -> !, write('Tidak ada item itu hei! Balik sana ke market!'), nl, nl, market),
     !.
 
@@ -80,7 +82,9 @@ buyAnimal :-
     printMarket(ListNama), nl,
     write('Pilihanmu (kode): '),
     read(Input), nl,
-    (item(animal,Input) -> buyItem(Input);
+    write('Mau beli berapa banyak: '),
+    read(Amount), nl,
+    (item(animal,Input) -> buyItem(Input, Amount);
     \+item(animal,Input) -> !, write('Tidak ada item itu hei! Balik sana ke market!'), nl, nl, market),
     !.
 
@@ -90,31 +94,41 @@ buyAnimalFood :-
     printMarket(ListNama), nl,
     write('Pilihanmu (kode): '),
     read(Input), nl,
-    (item(feed,Input) -> buyItem(Input);
+    write('Mau beli berapa banyak: '),
+    read(Amount), nl,
+    (item(feed,Input) -> buyItem(Input, Amount);
     \+item(feed,Input) -> !, write('Tidak ada item itu hei! Balik sana ke market!'), nl, nl, market),
     !.
 
-buyItem(Item) :-
+buyItem(Item, Amount) :-
     gold(G),
-    priceItem(Item, Price),
+    priceItem(Item, OnePrice),
+    Price is OnePrice * Amount,
     G >= Price,
     GNew is G - Price,
     item(Category, Item),
     (Category \= animal -> true(_); Category = animal -> initAnimal(Item)),
-    addItem(Item),
+    addItem(Item, Amount),
     retract(gold(G)),
     asserta(gold(GNew)),
     itemName(Item, Name),
-    write('Berhasil membeli satu '), write(Name), write('!'), nl,
+    format('Berhasil membeli ~w ~w!', [Name, Amount]), nl,
     write('Mau beli apa lagi?'), nl, nl,
     market,
     !.
 
-buyItem(Item) :-
+buyItem(Item, Amount) :-
     gold(G),
-    priceItem(Item, Price),
+    priceItem(Item, OnePrice),
+    Price is OnePrice * Amount,
     G < Price,
     write('Duit kamu kurang :( Sana kerja lagi!'), nl,
+    market,
+    !.
+
+buyItem(_, Amount) :-
+    Amount < 1,
+    write('Jumlah invalid. Mengembalikan ke market\n'),
     market,
     !.
 
