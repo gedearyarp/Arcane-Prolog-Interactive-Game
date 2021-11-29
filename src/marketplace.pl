@@ -48,10 +48,10 @@ beli :-
     write('3. Animal food'),nl,
     
     write('Masukkan pilihan: '), read(X),
-    (X =:= 1 -> buySeed;
-    X =:= 2 -> buyAnimal;
-    X =:= 3 -> buyAnimalFood;
-    X =:= 4 -> exitMarket;
+    (X =:= 1 -> !, buySeed;
+    X =:= 2 -> !, buyAnimal;
+    X =:= 3 -> !, buyAnimalFood;
+    X =:= 4 -> !, exitMarket, fail;
     write('Invalid input.'), nl, nl, market),nl,nl,
     !.
 
@@ -112,7 +112,7 @@ buyItem(Item, Amount) :-
     retract(gold(G)),
     asserta(gold(GNew)),
     itemName(Item, Name),
-    format('Berhasil membeli ~w ~w!', [Name, Amount]), nl,
+    format('Berhasil membeli ~w ~w!', [Amount, Name]), nl,
     write('Mau beli apa lagi?'), nl, nl,
     market,
     !.
@@ -143,8 +143,9 @@ jual :-
     true(_)),
     showSellableInventory, nl,
     write('Pilihanmu (COMMAND): '), read(Input),nl,
-    (\+member(Input, Inventory) -> itemName(Input, ItemName), format('There is no ~w in your inventory!\n', [ItemName]), market;
-    member(Input, Inventory) -> write('Mau jual berapa? '), read(Amount), nl, jualItem(Input, Amount)),
+    (
+    member(Input, Inventory) -> write('Mau jual berapa? '), read(Amount), nl, jualItem(Input, Amount);
+    write('Invalid input. Mengembalikan ke market.\n'), market),
     !.
 
 bonusPrice(Item, BonusPrice) :-
