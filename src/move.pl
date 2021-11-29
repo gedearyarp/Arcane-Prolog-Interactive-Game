@@ -36,8 +36,7 @@ encounterWater(X, Y) :-
     write('You can\'t go into water'), nl.
 
 encounterAlchemist(X, Y) :-
-    mapObject(X, Y, 'A'),
-    enterAlchemist(X, Y), alchemist, nl.
+    mapObject(X, Y, 'A'), alchemist, nl.
 
 enterAlchemist(X, Y) :-
     (mapObject(X, Y, 'A') ->
