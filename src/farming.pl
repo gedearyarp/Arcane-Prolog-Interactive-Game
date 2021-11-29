@@ -173,8 +173,8 @@ resetDig :-
     retractall(mapObject(_, _, '='))).
 updateFarm :-
     resetDig,
-    ((\+cooldownHarvest(_, _, _, _)) -> write('');
-    harvestCooldown(_, _, _)).
+    ((\+cooldownHarvest(X, Y, Crop, _)) -> write('');
+    harvestCooldown(X, Y, Crop)).
 
 
 /* Farming */
