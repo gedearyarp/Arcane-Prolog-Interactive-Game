@@ -259,7 +259,7 @@ throwItem(Item, _) :-
     itemName(Item, ItemName),
     format('There is no ~w in your inventory!\n', [ItemName]), fail. 
 
-throwItem(Item, _) :- 
+throwItem(Item, Amount) :- 
     currInventory(Inventory),
     cntItemInventory(Item, Inventory, Quantity),
     itemName(Item, ItemName),

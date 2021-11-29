@@ -153,16 +153,16 @@ feed(Animal) :-
     cntItemInventory(AnimalFeed, Inventory, Qty),
     
     (fedAnimal(Animal, false) ->
-    (Qty < Count ->
-    write('You don\'t have enough '), write(Animal), write(' feed.'), nl;
+    (Count > Qty ->
+    write('You don\'t have enough '), write(Animal), write(' feed.'), nl, !;
 
     throwItem(AnimalFeed, Count),
     retract(fedAnimal(Animal, false)),
     asserta(fedAnimal(Animal, true)),
-    write('You finished feeding your '), write(Animal), write('(s).'), nl);
+    write('You finished feeding your '), write(Animal), write('(s).'), nl), !;
     
     fedAnimal(Animal, true) ->
-    write('You already fed your '), write(Animal), write('(s).'), nl)).    
+    write('You already fed your '), write(Animal), write('(s).'), nl)), !.    
 
 
 /* Ranching Process while Sleeping */
