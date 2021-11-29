@@ -191,6 +191,7 @@ updateRanch :-
 
 /* Collecting Animal Production */
 collect(Animal) :-
+    currInventory(Inventory),
     (\+member(Animal, Inventory) ->
     write('You don\'t have '), write(Animal), write('. Go buy some in the marketplace!'), nl;
     
