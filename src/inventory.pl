@@ -183,7 +183,7 @@ printRemoveableInventory([]) :- !.
 printRemoveableInventory([H|T]) :-
     currInventory(Inventory),
     item(Category, H),
-    (Category == 'animal' -> !;
+    (Category == 'animal'; Category == 'equipment'-> !;
     cntItemInventory(H, Inventory, Quantity),
     itemName(H, ItemName),
     format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!
