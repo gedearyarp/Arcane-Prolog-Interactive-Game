@@ -61,7 +61,6 @@ initAnimal(Animal) :-
     asserta(fedAnimal(Animal, true)),
     asserta(collectAnimal(Animal, false));
     
-    member(Animal, Inventory) ->
     retract(fedAnimal(Animal, _)),
     asserta(fedAnimal(Animal, true))).
 

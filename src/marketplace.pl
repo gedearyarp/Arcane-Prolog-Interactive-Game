@@ -73,7 +73,7 @@ buyAnimal :-
     printMarket(ListNama), nl,
     write('Pilihanmu (kode): '),
     read(Input), nl,
-    (item(animal,Input) -> buyItem(Input), initAnimal(Input);
+    (item(animal,Input) -> buyItem(Input);
     \+item(animal,Input) -> !, write('Tidak ada item itu hei! Balik sana ke market!'), nl, nl, market),
     !.
 
@@ -92,6 +92,8 @@ buyItem(Item) :-
     priceItem(Item, Price),
     G >= Price,
     GNew is G - Price,
+    item(Category, Item),
+    (Category \= animal -> true(_); Category = animal -> initAnimal(Item)),
     addItem(Item),
     retract(gold(G)),
     asserta(gold(GNew)),
