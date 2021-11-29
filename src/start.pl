@@ -78,5 +78,6 @@ resetGame :-
     retract(totalGold(_)),
     retract(day(_)),
     retract(energy(_)),
+    retractall(diary(_,_)),
     retract(mapObject(_,_,'P')),
     asserta(mapObject(8,7,'P')).
