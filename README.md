@@ -37,7 +37,6 @@ Contributors:
 ## Structure
 ```bash
 │   README.md
-│   Tugas Besar Logika Komputasional 2021 – IF2121.pdf
 │
 ├───docs
 │       Tugas Besar Logika Komputasional 2021 – IF2121.pdf
