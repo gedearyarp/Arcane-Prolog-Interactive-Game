@@ -28,10 +28,10 @@ market :-
     write('3. Upgrade Equipment'), nl,
     write('4. Mo pulang ajh'), nl,
     write('Masukkan pilihan: '),read(X),
-    (X =:= 1 -> beli;
-    X =:= 2 -> jual;
-    X =:= 3 -> upgradeEq;
-    X =:= 4 -> exitMarket;
+    (X =:= 1 -> !, beli;
+    X =:= 2 -> !, jual;
+    X =:= 3 -> !, upgradeEq;
+    X =:= 4 -> !, exitMarket;
     market, write('Wrong input, please choose a number (1-4)')),nl,
     !.
 

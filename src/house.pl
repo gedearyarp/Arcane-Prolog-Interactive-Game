@@ -21,10 +21,10 @@ house :-
     write('3. Read Diary'), nl,
     write('4. Exit house'), nl,
     write('Masukkan pilihan (dalam bentuk angka): '),read(X),
-    (X =:= 1 -> sleep;
-    X =:= 2 -> writeDiary;
-    X =:= 3 -> readDiary;
-    X =:= 4 -> exitHouse;
+    (X =:= 1 -> !, sleep;
+    X =:= 2 -> !, writeDiary;
+    X =:= 3 -> !, readDiary;
+    X =:= 4 -> !, exitHouse;
     house, write('Wrong input please choose a number (1-4).')),nl,
     !.
 
@@ -48,8 +48,8 @@ sleep :-
     write('1. Yes'),nl,
     write('2. No thanks i am good'),nl,
     read(X),
-    (X =:= 2 -> house;
-    X =:= 1 -> sleepInProgress),nl,
+    (X =:= 2 -> !, house;
+    X =:= 1 -> !, sleepInProgress),nl,
     !.
 
 sleepInProgress :-
