@@ -3,7 +3,7 @@
 
 % DECLARE VALUE %
 maxInventory(100).
-currInventory([]).
+currInventory([shovel, fishing_rod, knife]).
 
 inventory :-
     showInventory,
