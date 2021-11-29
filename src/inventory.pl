@@ -126,6 +126,18 @@ cntUsableInventory([H|T], Count) :-
     Count is NewCount, !
     ), !.
 
+cntSellableInventory([], 0).
+
+cntSellableInventory([H|T], Count) :-
+    item(Category, H),
+    item(Category, H),
+    ((Category = animal; Category = potion; Category = equipment) -> 
+    cntSellableInventory(T, NewCount),
+    Count is NewCount;
+    cntSellableInventory(T, NewCount),
+    Count is NewCount + 1, !
+    ), !.
+
 sizeInventory(SizeInventory) :-
     currInventory(Inventory),
     cntInventory(Inventory,SizeInventory),!.
@@ -190,6 +202,18 @@ printRemoveableInventory([H|T]) :-
     ),
     printRemoveableInventory(T), !.
 
+printSellableInventory([]) :- !.
+
+printSellableInventory([H|T]) :-
+    currInventory(Inventory),
+    item(Category, H),
+    (Category == 'animal'; Category == 'equipment'; Category == 'potion'-> !;
+    cntItemInventory(H, Inventory, Quantity),
+    itemName(H, ItemName),
+    format('~w ~ws (COMMAND: ~w)\n',[Quantity, ItemName, H]),!
+    ),
+    printRemoveableInventory(T), !.
+
 % SHOW INVENTORY %
 showInventory :-
     currInventory(Inventory),
@@ -218,6 +242,16 @@ showRemoveableInventory :-
     write('Inventory\n'),
     sort(Inventory),
     printRemoveableInventory(Inventory),! 
+    ).
+
+showSellableInventory :-
+    currInventory(Inventory),
+    cntSellableInventory(Inventory, Size),
+    (Size = 0,
+    write('Your inventory is empty\n'),!;
+    write('Inventory\n'),
+    sort(Inventory),
+    printSellableInventory(Inventory),! 
     ).
 
 % USE ITEM FROM INVENTORY %

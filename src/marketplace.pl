@@ -138,7 +138,10 @@ exitMarket :-
 
 jual :-
     currInventory(Inventory),
-    showRemoveableInventory, nl,
+    cntSellableInventory(Inventory, Size),
+    (Size = 0 -> write('Item kamu ga ada yang bisa dijual. Apa yang mau dijual coba -_-\n') , market, fail;
+    true(_)),
+    showSellableInventory, nl,
     write('Pilihanmu (COMMAND): '), read(Input),nl,
     (\+member(Input, Inventory) -> itemName(Input, ItemName), format('There is no ~w in your inventory!\n', [ItemName]), market;
     member(Input, Inventory) -> write('Mau jual berapa? '), read(Amount), nl, jualItem(Input, Amount)),
