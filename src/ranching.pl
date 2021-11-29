@@ -169,24 +169,20 @@ feed(Animal) :-
 updateRanch :-
     currInventory(Inventory),
     ((\+member(chicken, Inventory) -> write('');
-    feedCooldown(chicken),
-    (\+fedAnimal(chicken, _) -> asserta(fedAnimal(chicken, false));
-    retract(fedAnimal(chicken, _)), asserta(fedAnimal(chicken, false)))),
+    (fedAnimal(chicken, false) -> write('');
+    retract(fedAnimal(chicken, _)), asserta(fedAnimal(chicken, false)), feedCooldown(chicken))),
 
     (\+member(sheep, Inventory) -> write('');
-    feedCooldown(sheep),
-    (\+fedAnimal(sheep, _) -> asserta(fedAnimal(sheep, false));
-    retract(fedAnimal(sheep, _)), asserta(fedAnimal(sheep, false)))),
+    (fedAnimal(sheep, false) -> write('');
+    retract(fedAnimal(sheep, _)), asserta(fedAnimal(sheep, false)), feedCooldown(sheep))),
 
     (\+member(cow, Inventory) -> write('');
-    feedCooldown(cow),
-    (\+fedAnimal(cow, _) -> asserta(fedAnimal(cow, false));
-    retract(fedAnimal(cow, _)), asserta(fedAnimal(cow, false)))),
+    (fedAnimal(cow, false) -> write('');
+    retract(fedAnimal(cow, _)), asserta(fedAnimal(cow, false)), feedCooldown(cow))),
 
     (\+member(goat, Inventory) -> write('');
-    feedCooldown(goat),
-    (\+fedAnimal(goat, _) -> asserta(fedAnimal(goat, false));
-    retract(fedAnimal(goat, _)), asserta(fedAnimal(goat, false))))).
+    (fedAnimal(goat, false) -> write('');
+    retract(fedAnimal(goat, _)), asserta(fedAnimal(goat, false)), feedCooldown(goat)))).
 
 
 /* Collecting Animal Production */
