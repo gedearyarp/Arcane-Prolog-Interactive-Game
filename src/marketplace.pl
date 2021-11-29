@@ -13,6 +13,13 @@
 % gold(5000).
 % DEBUG CODE ENDS HERE
 
+/* Sell Price Rate (based on player's job level) */
+priceRate(1, 0.133).
+priceRate(2, 0.333).
+priceRate(3, 0.533).
+priceRate(4, 0.733).
+priceRate(5, 0.933).
+
 market :-
     inMarket(_),
     write('Welcome to the secret shop!'),nl,
@@ -123,6 +130,24 @@ jual :-
     member(Input, Inventory) -> write('Mau jual berapa? '), read(Amount), nl, jualItem(Input, Amount)),
     !.
 
+bonusPrice(Item, BonusPrice) :-
+    item(Category, Item),
+    priceItem(Item, BasePrice),
+    fishingLevel(FishingLevel),
+    ranchingLevel(RanchingLevel),
+    farmingLevel(FarmingLevel),        
+    (Category = farming -> Level is FarmingLevel;
+    Category = fishing -> Level is FishingLevel;
+    (Category = ranching; Category = ranchingNonUseable) -> Level is RanchingLevel;
+    Level is 0),
+    (Level =:= 0 ->
+    write(''),
+    BonusPrice is 0, !;
+
+    priceRate(Level, Rate),
+    BonusRate is round(BasePrice * Rate),
+    BonusPrice is BonusRate + BasePrice, !), !.
+
 jualItem(_, Amount) :-
     Amount < 1,
     write('Invalid amount. Mengembalikan ke menu jual...'),
@@ -135,7 +160,9 @@ jualItem(Input, Amount) :-
     throwItem(Input,Amount),
     priceItem(Input,Price),
     itemName(Input, ItemName),
-    TotalPrice is Amount * Price,
+    bonusPrice(Input, BonusPrice),
+    PrevTotalPrice is Amount * Price,
+    TotalPrice is PrevTotalPrice + BonusPrice,
     GNew is G + TotalPrice,
     TGNew is TG + TotalPrice,
     retract(gold(G)),
