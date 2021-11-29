@@ -148,6 +148,15 @@ bonusPrice(Item, BonusPrice) :-
     BonusRate is round(BasePrice * Rate),
     BonusPrice is BonusRate + BasePrice, !), !.
 
+seedfeedPrice(Item, NegPrice) :-
+    item(Category, Item),
+    priceItem(Item, BasePrice),
+    Mult is BasePrice * 0.6,
+    MultB is ceiling(Mult),
+    (Category = seed -> NegPrice is MultB;
+    Category = feed -> NegPrice is MultB;
+    NegPrice is 0, !).
+
 jualItem(_, Amount) :-
     Amount < 1,
     write('Invalid amount. Mengembalikan ke menu jual...'),
@@ -161,8 +170,10 @@ jualItem(Input, Amount) :-
     priceItem(Input,Price),
     itemName(Input, ItemName),
     bonusPrice(Input, BonusPrice),
+    seedfeedPrice(Input, SPrice),
     PrevTotalPrice is Amount * Price,
     TotalPrice is PrevTotalPrice + BonusPrice,
+    GrandTotalPrice is TotalPrice - SPrice,
     GNew is G + TotalPrice,
     TGNew is TG + TotalPrice,
     retract(gold(G)),
@@ -170,7 +181,7 @@ jualItem(Input, Amount) :-
     retract(totalGold(TG)),
     asserta(totalGold(TGNew)),
     format('Berhasil menjual ~w sebanyak ~w buah!', [ItemName,Amount]), nl,
-    format('Anda mendapatkan ~w gold.', [TotalPrice]),nl,
+    format('Anda mendapatkan ~w gold.', [GrandTotalPrice]),nl,
     write('Mengembalikan ke menu market..'), nl, nl,
     market,
     !.
@@ -244,3 +255,10 @@ upgradeItem(_,3) :-
     write('Level equipment sudah maksimal.'), nl,
     market,
     !.
+
+itemCheat :-
+    addItem(cow),
+    addItem(tuna),
+    addItem(shark),
+    addItem(chicken_meat,5),
+    addItem(cow_milk, 7).
