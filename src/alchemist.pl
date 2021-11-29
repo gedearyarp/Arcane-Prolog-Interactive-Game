@@ -133,7 +133,7 @@ alchemist :-
     write('Xixixi...'), nl);
     
     inAlchemist(false) ->
-    write('Alchemist is not here. Let\'s just walk a bit further...'), nl).
+    write('There\'s an odd sign with \'alchemist\' written on it...'), nl).
     
 alchemist :-
     \+alchemist(_),
