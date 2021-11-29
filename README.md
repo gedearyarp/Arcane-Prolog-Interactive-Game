@@ -40,6 +40,7 @@ Contributors:
 │
 ├───docs
 │       Tugas Besar Logika Komputasional 2021 – IF2121.pdf
+|       Laporan_K01_G02.pdf
 │
 └───src
         alchemist.pl
